@@ -5,83 +5,589 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مواقيت الصلاة</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Noto Sans Arabic', sans-serif;
-            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.1"%3E%3Cpath d="M100 10 L120 40 L160 40 L130 60 L140 100 L100 80 L60 100 L70 60 L40 40 L80 40 Z" fill="%23D4AF37"/%3E%3C/svg%3E');
-            background-color: #E6F3F3;
-            background-size: 100px;
+            font-family: 'Amiri', serif;
+            background: linear-gradient(to bottom, #2E5B3F, #1B4D3E);
+            color: #FDF6E3;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
-        .time-card {
-            transition: transform 0.3s ease, background-color 0.3s ease;
+        .main-container {
+            background: rgba(245, 233, 214, 0.9);
+            border-radius: 1.25rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            padding: 2.5rem;
+            max-width: 28rem;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        .time-card:hover {
-            transform: translateY(-4px);
-            background-color: #F0FDFA;
+        .main-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"%3E%3Ccircle cx="20" cy="20" r="10" fill="%23FDF6E3" fill-opacity="0.5"/%3E%3Cpath d="M50 10 L53 18 L61 18 L55 23 L57 31 L50 27 L43 31 L45 23 L39 18 L47 18 Z" fill="%23FDF6E3"/%3E%3Ccircle cx="80" cy="80" r="3" fill="%23FDF6E3"/%3E%3Ccircle cx="70" cy="30" r="2" fill="%23FDF6E3"/%3E%3Cpath d="M30 60 A20 20 0 0 1 10 60 A20 20 0 0 1 30 60 Z" fill="%23FDF6E3" stroke="%23FDF6E3" stroke-width="1"/%3E%3C/svg%3E');
+            background-size: 80px;
+            pointer-events: none;
         }
-        #current-time {
-            animation: fadeIn 0.5s ease-in-out;
+        .title-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        h1 {
+            font-size: 3rem;
+            color: #1B4D3E;
+            margin: 0;
+        }
+        .subtitle {
+            font-size: 1.5rem;
+            color: #1B4D3E;
+            margin: 0.5rem 0 0;
+        }
+        .save-link {
+            color: #1B4D3E;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .save-link:hover {
+            color: #3A6F4A;
+            text-decoration: underline;
+        }
+        select {
+            background: #F5E9D6;
+            border: 1px solid #1B4D3E;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            width: 100%;
+            color: #1B4D3E;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        select option {
+            color: #1B4D3E;
+            background: #F5E9D6;
         }
         select:focus {
-            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.3);
+            border-color: #3A6F4A;
+            outline: none;
+        }
+        #coordinates {
+            font-size: 0.875rem;
+            color: #0A2D4A;
+            margin-bottom: 1.5rem;
+        }
+        .date-container {
+            background: #1B4D3E;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .date-container p {
+            font-size: 1.125rem;
+            color: #FDF6E3;
+            margin: 0.5rem 0;
+        }
+        .time-card {
+            background: #F5E9D6;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .time-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+        }
+        .time-card h2 {
+            font-size: 1.25rem;
+            color: #1B4D3E;
+            margin-bottom: 0.5rem;
+        }
+        .time-card p {
+            font-size: 1rem;
+            color: #0A2D4A;
+        }
+        .time-card h3 {
+            font-size: 1rem;
+            color: #3A6F4A;
+            margin-top: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        .calendar-description {
+            background: #F5E9D6;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            color: #0A2D4A;
+            line-height: 1.6;
+        }
+        footer {
+            font-size: 0.875rem;
+            color: #0A2D4A;
+            margin-top: 2rem;
+        }
+        .reset-button-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .button-group {
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+        .button {
+            font-size: 18px;
+            padding: 12px 24px;
+            cursor: pointer;
+            background: #1B4D3E;
+            color: #FDF6E3;
+            border: none;
+            border-radius: 8px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .button:hover {
+            background: #3A6F4A;
+            transform: scale(1.05);
+        }
+        .inline-button {
+            padding: 8px 16px;
+            font-size: 18px;
+        }
+        .inline-button.arrow {
+            font-size: 18px;
+            padding: 8px 16px;
+        }
+        #slider {
+            width: 90%;
+            margin: 20px auto;
+            height: 8px;
+            background: #3A6F4A;
+            border-radius: 5px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        #slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #1B4D3E;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        #slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        #mansion-info {
+            font-size: 1.125rem;
+            color: #FDF6E3;
+            margin: 0.5rem 0;
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center">
-    <div class="container mx-auto px-4 py-8">
-        <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 text-center">
-            <h1 class="text-3xl font-bold text-teal-900 mb-4">مواقيت الصلاة</h1>
-            <select id="city-select" aria-label="اختر المدينة" class="w-full p-3 mb-6 bg-teal-50 border border-teal-200 rounded-lg text-teal-900 focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-200">
-                <option value="port_said">بورسعيد، مصر</option>
-                <option value="cairo">القاهرة، مصر</option>
-                <option value="al_hilla" selected>الحلة، العراق</option>
-                <option value="karbala">كربلاء، العراق</option>
-                <option value="najaf">النجف، العراق</option>
-            </select>
-            <p class="text-lg text-teal-700 mb-4">التاريخ والوقت الحالي (GMT+3)</p>
-            <div id="current-time" class="text-2xl font-semibold text-teal-600 mb-6">--</div>
-            <div id="solar-times" class="space-y-6">
-                <div class="time-card bg-teal-50 p-4 rounded-lg shadow-sm">
-                    <h2 class="text-xl font-semibold text-teal-900">الفجر الصادق (بدء الشفق الملاحي)</h2>
-                    <p id="nautical-twilight-start" class="text-lg text-teal-700">--</p>
-                    <h3 class="text-base font-medium text-teal-800 mt-2">شروق الشمس</h3>
-                    <p id="sunrise" class="text-lg text-teal-700">--</p>
-                </div>
-                <div class="time-card bg-teal-50 p-4 rounded-lg shadow-sm">
-                    <h2 class="text-xl font-semibold text-teal-900">صلاة الظهرين (الظهر الشمسي)</h2>
-                    <p id="solar-noon" class="text-lg text-teal-700">--</p>
-                </div>
-                <div class="time-card bg-teal-50 p-4 rounded-lg shadow-sm">
-                    <h2 class="text-xl font-semibold text-teal-900">غروب الشمس</h2>
-                    <p id="sunset" class="text-lg text-teal-700">--</p>
-                    <h2 class="text-xl font-semibold text-teal-900 mt-4">صلاة العشاءين عند غياب الحمرة المشرقية (نهاية الشفق المدني)</h2>
-                    <p id="civil-twilight-end" class="text-lg text-teal-700">--</p>
-                </div>
-                <div class="time-card bg-teal-50 p-4 rounded-lg shadow-sm">
-                    <h2 class="text-xl font-semibold text-teal-900">صلاة الليل (منتصف الليل)</h2>
-                    <p id="night-prayer" class="text-lg text-teal-700">--</p>
-                </div>
+<body>
+    <div class="main-container">
+        <div class="title-container">
+            <div>
+                <h1>مواقيت الصلاة</h1>
+                <p class="subtitle">التقويم المحمدي</p>
             </div>
-            <p id="coordinates" class="text-sm text-teal-600 mt-6">الإحداثيات: --</p>
-            <footer class="text-sm text-teal-600 mt-6">2025 © اسم المصمم: محمد محفوظ</footer>
+            <a href="index.html" download class="save-link">حفظ الصفحة</a>
         </div>
+        <select id="city-select" aria-label="اختر المدينة">
+            <option value="najaf">النجف، العراق</option>
+            <option value="karbala">كربلاء، العراق</option>
+            <option value="al_hilla" selected>الحلة، العراق</option>
+            <option value="cairo">القاهرة، مصر</option>
+            <option value="alexandria">الإسكندرية، مصر</option>
+            <option value="port_said">بورسعيد، مصر</option>
+        </select>
+        <p id="coordinates">الإحداثيات: --</p>
+        <div class="date-container">
+            <p id="muhammadan-date">--</p>
+            <p id="gregorian-date">--</p>
+            <p id="mansion-info">--</p>
+        </div>
+        <div class="reset-button-container">
+            <button id="resetDay" class="button">إعادة صبط تاريخ اليوم</button>
+        </div>
+        <div class="button-group">
+            <button id="prevYear" class="button inline-button">العام السابق</button>
+            <button id="prevCustomMonth" class="button inline-button">الشهر السابق</button>
+            <button id="prevDay" class="button inline-button arrow">اليوم السابق</button>
+            <button id="nextDay" class="button inline-button arrow">اليوم القادم</button>
+            <button id="nextCustomMonth" class="button inline-button">الشهر القادم</button>
+            <button id="nextYear" class="button inline-button">العام القادم</button>
+        </div>
+        <input type="range" id="slider" min="0" max="364" value="0">
+        <div id="solar-times">
+            <div class="time-card">
+                <h2>الفجر الصادق (بدء الشفق الملاحي)</h2>
+                <p id="nautical-twilight-start">--</p>
+                <h3>شروق الشمس</h3>
+                <p id="sunrise">--</p>
+            </div>
+            <div class="time-card">
+                <h2>صلاة الظهرين (الظهر الشمسي)</h2>
+                <p id="solar-noon">--</p>
+            </div>
+            <div class="time-card">
+                <h2>غروب الشمس</h2>
+                <p id="sunset">--</p>
+                <h2>صلاة العشاءين عند غياب الحمرة المشرقية (نهاية الشفق المدني)</h2>
+                <p id="civil-twilight-end">--</p>
+            </div>
+            <div class="time-card">
+                <h2>صلاة الليل (منتصف الليل)</h2>
+                <p id="night-prayer">--</p>
+            </div>
+            <div class="calendar-description">
+                <p>التقويم المحمدى هو نتيجة بحث السيد الأستاذ فرقد الحسينى القزوينى دام فيضه: لا علاقة له بحركة القمر. بل هو: تقويم شمسى نجمى يعتمد على حركة الشمس فى منازلها لمعرفة مواقع الشهور فى الفصول أولا. ومعرفة عدد السنين. المصدر كتاب فيض العليم في معرفة التقويم للسيد الأستاذ فرقد الحسيني القزويني</p>
+            </div>
+        </div>
+        <footer>2025 © اسم المصمم: محمد محفوظ</footer>
     </div>
 
     <script>
         // City coordinates
         const cities = {
-            port_said: { lat: 31.2565, lng: 32.2841, name: 'بورسعيد، مصر' },
-            cairo: { lat: 30.0444, lng: 31.2357, name: 'القاهرة، مصر' },
-            al_hilla: { lat: 32.4637, lng: 44.4198, name: 'الحلة، العراق' },
+            najaf: { lat: 32.0259, lng: 44.3462, name: 'النجف، العراق' },
             karbala: { lat: 32.6060, lng: 44.0249, name: 'كربلاء، العراق' },
-            najaf: { lat: 32.0259, lng: 44.3462, name: 'النجف، العراق' }
+            al_hilla: { lat: 32.4637, lng: 44.4198, name: 'الحلة، العراق' },
+            cairo: { lat: 30.0444, lng: 31.2357, name: 'القاهرة، مصر' },
+            alexandria: { lat: 31.2001, lng: 29.9187, name: 'الإسكندرية، مصر' },
+            port_said: { lat: 31.2565, lng: 32.2841, name: 'بورسعيد، مصر' }
         };
+
+        // Muhammadan calendar data
+        const months = [
+            "رمضان", "شوال", "جمادى الأولى", "جمادى الآخرة", "رجب",
+            "ربيع الأول", "ربيع الآخر", "ذي القعدة", "ذي الحجة",
+            "محرم", "صفر", "شعبان"
+        ];
+        const baseSpecialDays = [
+            "يوم التقويم الأول", "يوم التقويم الثاني", "يوم التقويم الثالث",
+            "يوم التقويم الرابع", "يوم التقويم الخامس"
+        ];
+        const selectedTimezone = "Asia/Baghdad";
+
+        // Syriac month names
+        const syriacMonths = {
+            'يناير': 'كانون الثاني',
+            'فبراير': 'شباط',
+            'مارس': 'آذار',
+            'أبريل': 'نيسان',
+            'مايو': 'أيار',
+            'يونيو': 'حزيران',
+            'يوليو': 'تموز',
+            'أغسطس': 'آب',
+            'سبتمبر': 'أيلول',
+            'أكتوبر': 'تشرين الأول',
+            'نوفمبر': 'تشرين الثاني',
+            'ديسمبر': 'كانون الأول'
+        };
+
+        // Mansion data
+        const mansions = [
+            {
+                "التاريخ": "2025-01-02",
+                "الطالع بالغداة": "الشولة",
+                "الغارب بالغداة": "الهقعة",
+                "يقول ساجع العرب": "اذا طلعت الشولة اعجلت الشيخ البولة واشتدت على العائل العولة"
+            },
+            {
+                "التاريخ": "2025-01-15",
+                "الطالع بالغداة": "النعائم",
+                "الغارب بالغداة": "الهنعة",
+                "يقول ساجع العرب": "اذا طلعت النعائم توسفت التهائم وخلص البرد الى كل نائم وتلاقى الرعاء بالنمائم"
+            },
+            {
+                "التاريخ": "2025-01-28",
+                "الطالع بالغداة": "البلدة",
+                "الغارب بالغداة": "الذراع",
+                "يقول ساجع العرب": "اذا طلعت البلده حممت الجعده واكلت القشده وقيل للبرد اهده"
+            },
+            {
+                "التاريخ": "2025-02-10",
+                "الطالع بالغداة": "سعد الذابح",
+                "الغارب بالغداة": "النثرة",
+                "يقول ساجع العرب": "اذا طلع سعد الذابح حمى اهله النابح ونفع اهله الرائح وتصبح السارح وظهر فى الحى الانافح"
+            },
+            {
+                "التاريخ": "2025-02-23",
+                "الطالع بالغداة": "سعد بلع",
+                "الغارب بالغداة": "الطرفة",
+                "يقول ساجع العرب": "اذا طلع سعد بلع اقتحم الربع ولحق الهبع وصيد المرع وصار فى الارض لمع"
+            },
+            {
+                "التاريخ": "2025-03-08",
+                "الطالع بالغداة": "سعد السعود",
+                "الغارب بالغداة": "الجبهة",
+                "يقول ساجع العرب": "اذا طلع سعد السعود نظر العود ولانت الجلود وذاب كل محمود وكره الناس فى الشمس القعود"
+            },
+            {
+                "التاريخ": "2025-03-21",
+                "الطالع بالغداة": "سعد الأخبية",
+                "الغارب بالغداة": "الزبرة",
+                "يقول ساجع العرب": "اذا طلع سعد الاخبية دهنت الاسقيه ونزلت الاحوية وتجاورت الابنيه"
+            },
+            {
+                "التاريخ": "2025-04-03",
+                "الطالع بالغداة": "الفرغ الأول",
+                "الغارب بالغداة": "الصرفة",
+                "يقول ساجع العرب": "اذا طلع الدلو هيب الجزو وانسل العفو وطلب اللهو الخلو"
+            },
+            {
+                "التاريخ": "2025-04-16",
+                "الطالع بالغداة": "الفرغ المؤخر",
+                "الغارب بالغداة": "السماك",
+                "يقول ساجع العرب": "اذا طلع الدلو هيب الجزو وانسل العفو وطلب اللهو الخلو"
+            },
+            {
+                "التاريخ": "2025-04-29",
+                "الطالع بالغداة": "السمكة",
+                "الغارب بالغداة": "السماك",
+                "يقول ساجع العرب": "اذا طلعت السمكه نصبت الشبكه وامكنت الحركه وتعلقت بالثوب الحسكه وطاب الزمان للنسكه"
+            },
+            {
+                "التاريخ": "2025-05-12",
+                "الطالع بالغداة": "الشرطان",
+                "الغارب بالغداة": "الغفر",
+                "يقول ساجع العرب": "اذا طلع الشرطان استوى الزمان وحضرت الاوطان وتهادى الجيران"
+            },
+            {
+                "التاريخ": "2025-05-25",
+                "الطالع بالغداة": "البطين",
+                "الغارب بالغداة": "الزبانى",
+                "يقول ساجع العرب": "اذا طلع البطين اقتضى الدين وظهر الزين واقتفى بالعطار و الزين"
+            },
+            {
+                "التاريخ": "2025-06-07",
+                "الطالع بالغداة": "الثريا",
+                "الغارب بالغداة": "الإكليل",
+                "يقول ساجع العرب": "اذا طلع النجم فالحر فى حدم و العشب فى حطم والعانات فى كدم"
+            },
+            {
+                "التاريخ": "2025-06-20",
+                "الطالع بالغداة": "الدبران",
+                "الغارب بالغداة": "القلب",
+                "يقول ساجع العرب": "اذا طلعت الدبران توقدت الحزان وكرهت النيران واستعرت الذبان وبيست الغدران ورمت بانفسها حيث شاءت الصبيان"
+            },
+            {
+                "التاريخ": "2025-07-03",
+                "الطالع بالغداة": "الهقعة",
+                "الغارب بالغداة": "الشولة",
+                "يقول ساجع العرب": "اذا طلعت الهقعة تقوضت الناس للقلعة ورجعوا عن النجعه واردفتها الهنعة"
+            },
+            {
+                "التاريخ": "2025-07-16",
+                "الطالع بالغداة": "الهنعة",
+                "الغارب بالغداة": "النعائم",
+                "يقول ساجع العرب": "اذا طلعت الجوزاء توقدت المعزاء وكنست الضباء وعرقت العلباء وطاب الخباء"
+            },
+            {
+                "التاريخ": "2025-07-29",
+                "الطالع بالغداة": "الذراع",
+                "الغارب بالغداة": "البلدة",
+                "يقول ساجع العرب": "اذا طلعت الذراع حسرت الشمس القناع واشعلت فى الافق الشعاع وترقرق السراب بكل قاع"
+            },
+            {
+                "التاريخ": "2025-08-11",
+                "الطالع بالغداة": "النثرة",
+                "الغارب بالغداة": "سعد الذابح",
+                "يقول ساجع العرب": "اذا طلعت النثرة قنأة البسرة وجنى النخل بكره وأوت المواشى حجره ولم تترك ف ذات در قطره"
+            },
+            {
+                "التاريخ": "2025-08-24",
+                "الطالع بالغداة": "الطرف",
+                "الغارب بالغداة": "سعد بلع",
+                "يقول ساجع العرب": "اذا طلعت الطرفة بكرت الخرفة وكثرت الطرفة وهانت للضيف الكلفة"
+            },
+            {
+                "التاريخ": "2025-09-06",
+                "الطالع بالغداة": "الجبهة",
+                "الغارب بالغداة": "سعد السعود",
+                "يقول ساجع العرب": "اذا طلعت الجبهة تحانت الولهه وتنازت السفهة وقلت فى الارض الرفهة"
+            },
+            {
+                "التاريخ": "2025-09-20",
+                "الطالع بالغداة": "الزبرة",
+                "الغارب بالغداة": "سعد الأخبية",
+                "يقول ساجع العرب": "اذا طلعت الزبرة طاب الزمان جنى البسر فى كل مكان"
+            },
+            {
+                "التاريخ": "2025-10-03",
+                "الطالع بالغداة": "الصرفة",
+                "الغارب بالغداة": "الفرغ الأول",
+                "يقول ساجع العرب": "اذا طلعت الصرفة احتال كل ذي حرفة وجفر كل ذي نطفة وامتيز عن المياه زلفه"
+            },
+            {
+                "التاريخ": "2025-10-16",
+                "الطالع بالغداة": "العواء",
+                "الغارب بالغداة": "الفرغ المؤخر",
+                "يقول ساجع العرب": "إذا طلعت العواء ضرب الخباء وطاب الهواء وكره العراء وشنن السقاء"
+            },
+            {
+                "التاريخ": "2025-10-29",
+                "الطالع بالغداة": "السماك",
+                "الغارب بالغداة": "السمكة",
+                "يقول ساجع العرب": "لذا طلع السماك ذهب العكاك وقل على الماء اللكاك"
+            },
+            {
+                "التاريخ": "2025-11-11",
+                "الطالع بالغداة": "الغفر",
+                "الغارب بالغداة": "الشرطان",
+                "يقول ساجع العرب": "اذا طلع الغفر اقشعر السفر وتربل النضر وحسن فى العين الجمر"
+            },
+            {
+                "التاريخ": "2025-11-24",
+                "الطالع بالغداة": "الزبانى",
+                "الغارب بالغداة": "البطين",
+                "يقول ساجع العرب": "اذا طلعت الزبانى احدثت لكل ذي عيال شانا ولكل ذي ماشية هوانا"
+            },
+            {
+                "التاريخ": "2025-12-07",
+                "الطالع بالغداة": "الإكليل",
+                "الغارب بالغداة": "الثريا",
+                "يقول ساجع العرب": "اذا طلع الإكليل هاجت الفحول وتخوفت السيول"
+            },
+            {
+                "التاريخ": "2025-12-20",
+                "الطالع بالغداة": "القلب",
+                "الغارب بالغداة": "الدبران",
+                "يقول ساجع العرب": "اذا طلع القلب جاء الشتاء كالكلب وصار اهل البوادي فى كرب ولا يمكن الفحل الا ذات ثرب"
+            }
+        ];
+
+        let todayGregYear = 2025;
+        let todayIndex = 0;
+        let baseGregYear = 2025;
+        let baseIndex = 0;
+
+        // Function to check leap year
+        function isLeapYear(year) {
+            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        }
+
+        // Function to get Muhammadan index and year
+        function getTodayIndexAndYear() {
+            const today = new Date(new Date().toLocaleString('en-US', { timeZone: selectedTimezone }));
+            const todayYear = today.getFullYear();
+            const todayMonth = today.getMonth();
+            const todayDate = today.getDate();
+
+            let year = todayYear;
+            let calendarStart = new Date(year, 9, 16); // October 16
+            let calendarEnd = new Date(year + 1, 9, 15);
+
+            if (today < calendarStart) {
+                year--;
+                calendarStart = new Date(year, 9, 16);
+                calendarEnd = new Date(year + 1, 9, 15);
+            } else if (today > calendarEnd) {
+                year++;
+                calendarStart = new Date(year, 9, 16);
+                calendarEnd = new Date(year + 1, 9, 15);
+            }
+
+            const timeDiff = today - calendarStart;
+            const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+            return { index: daysDiff, year };
+        }
+
+        // Function to get Muhammadan date
+        function getCustomDate(index, year) {
+            const baseDate = new Date(year, 9, 16);
+            baseDate.setDate(baseDate.getDate() + index);
+
+            const dayOfWeek = baseDate.toLocaleDateString('ar-EG', { weekday: 'long', timeZone: selectedTimezone });
+            const gregYear = baseDate.getFullYear();
+            const isBeforeCutoff = baseDate.getMonth() < 9 || (baseDate.getMonth() === 9 && baseDate.getDate() < 16);
+            const customYear = 1404 + (gregYear - 2024 - (isBeforeCutoff ? 1 : 0));
+
+            let dayName;
+            const isEndYearLeap = isLeapYear(year + 1);
+            const specialDays = isEndYearLeap ? [...baseSpecialDays, "يوم التقويم السادس"] : [...baseSpecialDays];
+            if (index >= 360) {
+                dayName = specialDays[index - 360];
+            } else {
+                const monthIndex = Math.floor(index / 30);
+                const day = (index % 30) + 1;
+                dayName = `${day} ${months[monthIndex]}`;
+            }
+
+            // Format Gregorian date with Syriac months
+            const standardDate = baseDate.toLocaleDateString('ar-EG', { 
+                weekday: 'long', 
+                day: 'numeric', 
+                month: 'long', 
+                year: 'numeric', 
+                timeZone: selectedTimezone 
+            });
+            const parts = standardDate.split(' ');
+            const monthIndex = parts.findIndex(part => Object.keys(syriacMonths).includes(part));
+            if (monthIndex !== -1) {
+                parts[monthIndex] = syriacMonths[parts[monthIndex]];
+            }
+            const gregorianDate = parts.join(' ');
+
+            return { 
+                text: `${dayOfWeek} ${dayName} لسنة ${customYear} من الهجرة (تقويم محمدى)`, 
+                date: baseDate, 
+                gregorian: gregorianDate 
+            };
+        }
+
+        // Function to get mansion info
+        function getMansionInfo(index, year) {
+            const isEndYearLeap = isLeapYear(year + 1);
+            if (isEndYearLeap && index === 365) {
+                return mansions[27];
+            }
+
+            const cycleIndex = index % 365;
+            const baseDate = new Date(2024, 9, 16);
+            const ranges = mansions.map((mansion, i) => {
+                const date = new Date(mansion["التاريخ"]);
+                const timeDiff = date - baseDate;
+                const startIndex = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                const isJabha = mansion["الطالع بالغداة"] === "الجبهة";
+                const endIndex = startIndex + (isJabha ? 13 : 12);
+                return { start: startIndex % 365, end: endIndex % 365, mansion };
+            });
+
+            for (const range of ranges) {
+                if (range.start <= range.end && cycleIndex >= range.start && cycleIndex <= range.end) {
+                    return range.mansion;
+                } else if (range.start > range.end && (cycleIndex >= range.start || cycleIndex <= range.end)) {
+                    return range.mansion;
+                }
+            }
+
+            return null;
+        }
 
         // Function to format time to HH:MM:SS
         function formatTime(date) {
@@ -93,38 +599,30 @@
             });
         }
 
-        // Function to format date and time
-        function formatDateTime(date) {
-            return date.toLocaleString('ar-EG', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric', 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                second: '2-digit', 
-                hour12: false 
-            });
-        }
-
-        // Update current time every second
+        // Update Muhammadan date, Gregorian date, and mansion info
         function updateCurrentTime() {
-            const now = new Date();
-            // Adjust for GMT+3
-            const gmt3Offset = 3 * 60 * 60 * 1000;
-            const localTime = new Date(now.getTime() + gmt3Offset);
-            document.getElementById('current-time').textContent = formatDateTime(localTime);
+            const { index, year } = getTodayIndexAndYear();
+            todayIndex = index;
+            todayGregYear = year;
+            const { text, gregorian } = getCustomDate(baseIndex, baseGregYear);
+            document.getElementById('muhammadan-date').textContent = text;
+            document.getElementById('gregorian-date').textContent = gregorian;
+
+            const mansion = getMansionInfo(baseIndex, baseGregYear);
+            document.getElementById('mansion-info').textContent = mansion 
+                ? `الطالع بالغداة: ${mansion["الطالع بالغداة"]} | الغارب بالغداة: ${mansion["الغارب بالغداة"]} | يقول ساجع العرب: ${mansion["يقول ساجع العرب"]}`
+                : 'لا توجد معلومات عن المنزلة';
         }
 
-        // Update solar times and coordinates for selected city
+        // Update solar times and coordinates for selected city and date
         function updateSolarTimes() {
             const selectedCity = document.getElementById('city-select').value;
             const city = cities[selectedCity];
             const solarTimesDiv = document.getElementById('solar-times');
             solarTimesDiv.classList.add('opacity-50');
             setTimeout(() => {
-                const today = new Date();
-                const timesToday = SunCalc.getTimes(today, city.lat, city.lng);
+                const { date } = getCustomDate(baseIndex, baseGregYear);
+                const timesToday = SunCalc.getTimes(date, city.lat, city.lng);
 
                 const sunset = timesToday.sunset;
                 const nauticalDawn = timesToday.nauticalDawn;
@@ -143,18 +641,151 @@
             }, 300);
         }
 
+        // Navigation event listeners
+        const slider = document.getElementById('slider');
+        const prevYear = document.getElementById('prevYear');
+        const nextYear = document.getElementById('nextYear');
+        const prevCustomMonth = document.getElementById('prevCustomMonth');
+        const nextCustomMonth = document.getElementById('nextCustomMonth');
+        const prevDay = document.getElementById('prevDay');
+        const nextDay = document.getElementById('nextDay');
+        const resetDay = document.getElementById('resetDay');
+
+        slider.addEventListener('input', () => {
+            baseIndex = parseInt(slider.value);
+            const isEndYearLeap = isLeapYear(baseGregYear + 1);
+            slider.max = isEndYearLeap ? 365 : 364;
+            if (baseIndex > slider.max) {
+                baseIndex = slider.max;
+                slider.value = baseIndex;
+            }
+            updateCurrentTime();
+            updateSolarTimes();
+        });
+
+        prevYear.addEventListener('click', () => {
+            baseGregYear--;
+            const isEndYearLeap = isLeapYear(baseGregYear + 1);
+            const maxIndex = isEndYearLeap ? 365 : 364;
+            if (baseIndex > maxIndex) {
+                baseIndex = maxIndex;
+            }
+            slider.max = maxIndex;
+            slider.value = baseIndex;
+            updateCurrentTime();
+            updateSolarTimes();
+        });
+
+        nextYear.addEventListener('click', () => {
+            baseGregYear++;
+            const isEndYearLeap = isLeapYear(baseGregYear + 1);
+            const maxIndex = isEndYearLeap ? 365 : 364;
+            if (baseIndex > maxIndex) {
+                baseIndex = maxIndex;
+            }
+            slider.max = maxIndex;
+            slider.value = baseIndex;
+            updateCurrentTime();
+            updateSolarTimes();
+        });
+
+        prevCustomMonth.addEventListener('click', () => {
+            const isEndYearLeap = isLeapYear(baseGregYear + 1);
+            const maxIndex = isEndYearLeap ? 365 : 364;
+            const currentMonth = baseIndex >= 360 ? 12 : Math.floor(baseIndex / 30);
+            
+            let newMonth = currentMonth - 1;
+            let newIndex;
+            if (newMonth < 0) {
+                baseGregYear--;
+                newIndex = 360;
+            } else {
+                newIndex = newMonth * 30;
+            }
+            baseIndex = newIndex;
+            slider.max = isLeapYear(baseGregYear + 1) ? 365 : 364;
+            slider.value = baseIndex;
+            updateCurrentTime();
+            updateSolarTimes();
+        });
+
+        nextCustomMonth.addEventListener('click', () => {
+            const isEndYearLeap = isLeapYear(baseGregYear + 1);
+            const maxIndex = isEndYearLeap ? 365 : 364;
+            const currentMonth = baseIndex >= 360 ? 12 : Math.floor(baseIndex / 30);
+            
+            let newMonth = currentMonth + 1;
+            let newIndex;
+            if (newMonth === 12) {
+                newIndex = 360;
+            } else if (newMonth > 12) {
+                baseGregYear++;
+                newIndex = 0;
+            } else {
+                newIndex = newMonth * 30;
+            }
+            baseIndex = newIndex;
+            slider.max = isLeapYear(baseGregYear + 1) ? 365 : 364;
+            slider.value = baseIndex;
+            updateCurrentTime();
+            updateSolarTimes();
+        });
+
+        prevDay.addEventListener('click', () => {
+            const isEndYearLeap = isLeapYear(baseGregYear + 1);
+            const maxIndex = isEndYearLeap ? 365 : 364;
+
+            baseIndex--;
+            if (baseIndex < 0) {
+                baseGregYear--;
+                baseIndex = isLeapYear(baseGregYear + 1) ? 365 : 364;
+            }
+            slider.max = isLeapYear(baseGregYear + 1) ? 365 : 364;
+            slider.value = baseIndex;
+            updateCurrentTime();
+            updateSolarTimes();
+        });
+
+        nextDay.addEventListener('click', () => {
+            const isEndYearLeap = isLeapYear(baseGregYear + 1);
+            const maxIndex = isEndYearLeap ? 365 : 364;
+
+            baseIndex++;
+            if (baseIndex > maxIndex) {
+                baseGregYear++;
+                baseIndex = 0;
+            }
+            slider.max = isLeapYear(baseGregYear + 1) ? 365 : 364;
+            slider.value = baseIndex;
+            updateCurrentTime();
+            updateSolarTimes();
+        });
+
+        resetDay.addEventListener('click', () => {
+            baseIndex = todayIndex;
+            baseGregYear = todayGregYear;
+            slider.max = isLeapYear(baseGregYear + 1) ? 365 : 364;
+            slider.value = baseIndex;
+            updateCurrentTime();
+            updateSolarTimes();
+        });
+
         // Initial update
+        const { index, year } = getTodayIndexAndYear();
+        todayIndex = index;
+        todayGregYear = year;
+        baseIndex = index;
+        baseGregYear = year;
+        slider.max = isLeapYear(baseGregYear + 1) ? 365 : 364;
+        slider.value = baseIndex;
         updateCurrentTime();
         updateSolarTimes();
 
-        // Update current time every second
+        // Update every second
         setInterval(updateCurrentTime, 1000);
 
         // Update solar times when city changes
         document.getElementById('city-select').addEventListener('change', updateSolarTimes);
-
-        // Update solar times daily
-        setInterval(updateSolarTimes, 24 * 60 * 60 * 1000);
     </script>
 </body>
 </html>
