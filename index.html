@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مواقيت الصلاة</title>
+    <title>مواقيت الصلاة - التقويم المحمدي</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -89,16 +89,40 @@
         #coordinates {
             font-size: 0.875rem;
             color: #0A2D4A;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
         .date-container {
+            background: #1B4D3E;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .date-container p {
+            font-size: 1.125rem;
+            color: #FDF6E3;
+            margin: 0.5rem 0;
+        }
+        .occasion-container {
+            background: #1B4D3E;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .occasion-container p {
+            font-size: 1.125rem;
+            color: #FDF6E3;
+            margin: 0.5rem 0;
+        }
+        .mansion-container {
             background: #1B4D3E;
             border-radius: 0.75rem;
             padding: 1rem;
             margin-bottom: 2rem;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
-        .date-container p {
+        .mansion-container p {
             font-size: 1.125rem;
             color: #FDF6E3;
             margin: 0.5rem 0;
@@ -123,12 +147,7 @@
         .time-card p {
             font-size: 1rem;
             color: #0A2D4A;
-        }
-        .time-card h3 {
-            font-size: 1rem;
-            color: #3A6F4A;
-            margin-top: 1rem;
-            margin-bottom: 0.25rem;
+            margin: 0.25rem 0;
         }
         .calendar-description {
             background: #F5E9D6;
@@ -139,15 +158,40 @@
             color: #0A2D4A;
             line-height: 1.6;
         }
+        .conversion-container {
+            background: #F5E9D6;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .conversion-container h2 {
+            font-size: 1.25rem;
+            color: #1B4D3E;
+            margin-bottom: 1rem;
+        }
+        .conversion-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .conversion-controls select, .conversion-controls input {
+            flex: 1;
+            min-width: 120px;
+        }
+        .conversion-result {
+            background: #1B4D3E;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            color: #FDF6E3;
+            margin-top: 1rem;
+        }
         footer {
             font-size: 0.875rem;
             color: #0A2D4A;
             margin-top: 2rem;
-        }
-        .reset-button-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1rem;
         }
         .button-group {
             margin: 20px 0;
@@ -178,7 +222,7 @@
             font-size: 18px;
             padding: 8px 16px;
         }
-        #slider {
+        #slider, #time-slider {
             width: 90%;
             margin: 20px auto;
             height: 8px;
@@ -187,7 +231,7 @@
             outline: none;
             -webkit-appearance: none;
         }
-        #slider::-webkit-slider-thumb {
+        #slider::-webkit-slider-thumb, #time-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 20px;
             height: 20px;
@@ -196,18 +240,70 @@
             cursor: pointer;
             transition: transform 0.3s ease;
         }
-        #slider::-webkit-slider-thumb:hover {
+        #slider::-webkit-slider-thumb:hover, #time-slider::-webkit-slider-thumb:hover {
             transform: scale(1.2);
         }
-        #mansion-info {
-            font-size: 1.125rem;
-            color: #FDF6E3;
+        #mansion-info p {
             margin: 0.5rem 0;
+        }
+        #current-time {
+            font-size: 1rem;
+            color: #0A2D4A;
+            margin-bottom: 0.5rem;
+        }
+        #remaining-time {
+            font-size: 1rem;
+            color: #3A6F4A;
+            margin-bottom: 0.5rem;
+        }
+        .links-container {
+            background: #F5E9D6;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            color: #0A2D4A;
+            line-height: 1.6;
+        }
+        .links-container a {
+            color: #1B4D3E;
+            text-decoration: none;
+            display: block;
+            margin: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+        .links-container a:hover {
+            color: #3A6F4A;
+            text-decoration: underline;
+        }
+        .facebook-icon {
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+        .conversion-navigation {
+            margin-top: 1rem;
         }
     </style>
 </head>
 <body>
     <div class="main-container">
+        <div class="calendar-description">
+            <p>التقويم المحمدى هو نتيجة بحث السيد الأستاذ فرقد الحسينى القزوينى دام فيضه: لا علاقة له بحركة القمر. بل هو: تقويم شمسى نجمى يعتمد على حركة الشمس فى منازلها لمعرفة مواقع الشهور فى الفصول أولا. ومعرفة عدد السنين. المصدر كتاب فيض العليم في معرفة التقويم للسيد الأستاذ فرقد الحسيني القزويني</p>
+        </div>
+        
+        <div class="links-container">
+            <a href="https://drive.google.com/file/d/1KonLhpZ8gsSPl1UlbjyxGm1kHHQaQmTQ/view?fbclid=IwY2xjawM3-HtleHRuA2FlbQIxMABicmlkETEyZWVrR0RZejFUYzN5T0FVAR4YHrEAXzr9WSySCkqQLw0HDZshjLcBYhl22b9EPQJtHh1tNdliO_PRcPQdEQ_aem_yCNWTOaAr28eYVfRsxK3dw">التقويم المحمدي السنوي في الرابط التالي</a>
+            <a href="https://books.google.com.eg/books/about/%D9%81%D9%8A%D8%B6_%D8%A7%D9%84%D8%B9%D9%84%D9%8A%D9%85_%D9%81%D9%8A_%D9%85%D8%B9%D8%B1%D9%81%D8%A9_%D8%A7%D9%84.html?id=OyO1EAAAQBAJ&redir_esc=y">رابط كتاب فيض العليم فى معرفة التقويم</a>
+            <a href="https://www.facebook.com/AlhillaNgo" title="مؤسسة الحلة للدراسات الإنسانية والعلمية والدينية/ بابل">
+                <svg class="facebook-icon" viewBox="0 0 24 24" fill="#1B4D3E">
+                    <path d="M12 2.04c-5.5 0-10 4.49-10 10 0 4.99 3.66 9.13 8.44 9.88v-6.98h-2.54v-2.9h2.54v-2.21c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.24.19 2.24.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.77l-.44 2.9h-2.33v6.98c4.78-.75 8.44-4.89 8.44-9.88 0-5.51-4.5-10-10-10z"/>
+                </svg>
+                مؤسسة الحلة للدراسات الإنسانية والعلمية والدينية/ بـــــابـــــــل
+            </a>
+        </div>
+
         <div class="title-container">
             <div>
                 <h1>مواقيت الصلاة</h1>
@@ -215,57 +311,87 @@
             </div>
             <a href="index.html" download class="save-link">حفظ الصفحة</a>
         </div>
-        <select id="city-select" aria-label="اختر المدينة">
-            <option value="najaf">النجف، العراق</option>
-            <option value="karbala">كربلاء، العراق</option>
-            <option value="al_hilla" selected>الحلة، العراق</option>
-            <option value="cairo">القاهرة، مصر</option>
-            <option value="alexandria">الإسكندرية، مصر</option>
-            <option value="port_said">بورسعيد، مصر</option>
-        </select>
-        <p id="coordinates">الإحداثيات: --</p>
+        
         <div class="date-container">
             <p id="muhammadan-date">--</p>
             <p id="gregorian-date">--</p>
-            <p id="mansion-info">--</p>
         </div>
-        <div class="reset-button-container">
-            <button id="resetDay" class="button">إعادة صبط تاريخ اليوم</button>
+        
+        <div class="occasion-container">
+            <p id="occasion-info">المناسبات: --</p>
         </div>
-        <div class="button-group">
-            <button id="prevYear" class="button inline-button">العام السابق</button>
-            <button id="prevCustomMonth" class="button inline-button">الشهر السابق</button>
-            <button id="prevDay" class="button inline-button arrow">اليوم السابق</button>
-            <button id="nextDay" class="button inline-button arrow">اليوم القادم</button>
-            <button id="nextCustomMonth" class="button inline-button">الشهر القادم</button>
-            <button id="nextYear" class="button inline-button">العام القادم</button>
+        
+        <div class="mansion-container">
+            <p id="mansion-info-rising">الطالع بالغداة: --</p>
+            <p id="mansion-info-setting">الغارب بالغداة: --</p>
+            <p id="mansion-info-quote">يقول ساجع العرب: --</p>
         </div>
-        <input type="range" id="slider" min="0" max="364" value="0">
+        
         <div id="solar-times">
             <div class="time-card">
-                <h2>الفجر الصادق (بدء الشفق الملاحي)</h2>
-                <p id="nautical-twilight-start">--</p>
-                <h3>شروق الشمس</h3>
-                <p id="sunrise">--</p>
-            </div>
-            <div class="time-card">
-                <h2>صلاة الظهرين (الظهر الشمسي)</h2>
-                <p id="solar-noon">--</p>
-            </div>
-            <div class="time-card">
-                <h2>غروب الشمس</h2>
-                <p id="sunset">--</p>
-                <h2>صلاة العشاءين عند غياب الحمرة المشرقية (نهاية الشفق المدني)</h2>
-                <p id="civil-twilight-end">--</p>
-            </div>
-            <div class="time-card">
-                <h2>صلاة الليل (منتصف الليل)</h2>
-                <p id="night-prayer">--</p>
-            </div>
-            <div class="calendar-description">
-                <p>التقويم المحمدى هو نتيجة بحث السيد الأستاذ فرقد الحسينى القزوينى دام فيضه: لا علاقة له بحركة القمر. بل هو: تقويم شمسى نجمى يعتمد على حركة الشمس فى منازلها لمعرفة مواقع الشهور فى الفصول أولا. ومعرفة عدد السنين. المصدر كتاب فيض العليم في معرفة التقويم للسيد الأستاذ فرقد الحسيني القزويني</p>
+                <select id="city-select" aria-label="اختر المدينة">
+                    <option value="najaf">النجف، العراق</option>
+                    <option value="karbala">كربلاء، العراق</option>
+                    <option value="al_hilla" selected>الحلة، العراق</option>
+                    <option value="cairo">القاهرة، مصر</option>
+                    <option value="alexandria">الإسكندرية، مصر</option>
+                    <option value="port_said">بورسعيد، مصر</option>
+                </select>
+                <p id="coordinates">الإحداثيات: --</p>
+                <p id="current-time">--</p>
+                <input type="range" id="time-slider" min="0" max="1439" value="0">
+                <p id="remaining-time">--</p>
+                <h2>مواقيت الصلاة</h2>
+                <p><strong>الإمساك</strong>: <span id="astronomical-dawn">--</span></p>
+                <p><strong>صلاة الفجر</strong>: <span id="nautical-twilight-start">--</span></p>
+                <p><strong>طلوع الشمس</strong>: <span id="sunrise">--</span></p>
+                <p><strong>صلاة الظهر</strong>: <span id="solar-noon">--</span></p>
+                <p><strong>غروب الشمس</strong>: <span id="sunset">--</span></p>
+                <p><strong>صلاة المغرب (غياب الحمرة المشرقية)</strong>: <span id="civil-twilight-end">--</span></p>
+                <p><strong>وقت الإفطار</strong>: <span id="iftar">--</span></p>
+                <p><strong>صلاة الليل (منتصف الليل)</strong>: <span id="night-prayer">--</span></p>
             </div>
         </div>
+        
+        <div class="conversion-container">
+            <h2>المقابلة بين التقويم المحمدي والتقويم الشمسي الحالي (الميلادي)</h2>
+            
+            <div class="conversion-controls">
+                <input type="date" id="conversion-gregorian-picker" min="0620-01-01" max="2089-12-31">
+            </div>
+            
+            <p>أو اختر تاريخاً من التقويم المحمدي:</p>
+            
+            <div class="conversion-controls">
+                <select id="conversion-custom-day"></select>
+                <select id="conversion-custom-month"></select>
+                <select id="conversion-custom-year"></select>
+            </div>
+            
+            <div class="conversion-navigation">
+                <div class="button-group">
+                    <button id="prevDay" class="button inline-button arrow">اليوم السابق</button>
+                    <button id="prevCustomMonth" class="button inline-button">الشهر السابق</button>
+                    <button id="prevYear" class="button inline-button">العام السابق</button>
+                    <button id="nextYear" class="button inline-button">العام القادم</button>
+                    <button id="nextCustomMonth" class="button inline-button">الشهر القادم</button>
+                    <button id="nextDay" class="button inline-button arrow">اليوم القادم</button>
+                </div>
+                
+                <div class="reset-button-container">
+                    <button id="resetDay" class="button">إعادة صبط تاريخ اليوم</button>
+                </div>
+                
+                <input type="range" id="slider" min="0" max="364" value="0">
+            </div>
+            
+            <div class="conversion-result">
+                <p id="conversion-muhammadan-date">--</p>
+                <p id="conversion-gregorian-date">--</p>
+                <p id="conversion-occasion">--</p>
+            </div>
+        </div>
+        
         <footer>2025 © اسم المصمم: محمد محفوظ</footer>
     </div>
 
@@ -293,20 +419,62 @@
         const selectedTimezone = "Asia/Baghdad";
 
         // Syriac month names
-        const syriacMonths = {
-            'يناير': 'كانون الثاني',
-            'فبراير': 'شباط',
-            'مارس': 'آذار',
-            'أبريل': 'نيسان',
-            'مايو': 'أيار',
-            'يونيو': 'حزيران',
-            'يوليو': 'تموز',
-            'أغسطس': 'آب',
-            'سبتمبر': 'أيلول',
-            'أكتوبر': 'تشرين الأول',
-            'نوفمبر': 'تشرين الثاني',
-            'ديسمبر': 'كانون الأول'
-        };
+        const syriacMonths = [
+            'كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران',
+            'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول'
+        ];
+
+        // Occasions data from auxiliary webpage
+        const occasions = [
+            {"month": "رمضان", "day": "1", "occasion": "ليلة القدر"},
+            {"month": "رمضان", "day": "10", "occasion": "وفاة السيدة خديجة عليها السلام"},
+            {"month": "رمضان", "day": "15", "occasion": "ميلاد الإمام الحسن بن ابي طالب عليه السلام"},
+            {"month": "رمضان", "day": "19", "occasion": "جرح أمير المؤمنين عليه السلام"},
+            {"month": "رمضان", "day": "21", "occasion": "إستشهاد الإمام علي بن ابي طالب عليه السلام"},
+            {"month": "شوال", "day": "1", "occasion": "عيد الفطر"},
+            {"month": "شوال", "day": "15", "occasion": "معركة احد واستشهاد الحمزة عليه السلام"},
+            {"month": "شوال", "day": "25", "occasion": "إستشهاد الإمام جعفر الصادق عليه السلام"},
+            {"month": "جمادى الأولى", "day": "5", "occasion": "ولادة السيدة زينب بنت علي بن ابي طالب عليه السلام سنة 5 هجري"},
+            {"month": "جمادى الأولى", "day": "13", "occasion": "استشهاد فاطمه الزهراء عليها السلام على رواية"},
+            {"month": "جمادى الآخرة", "day": "3", "occasion": "وفاة السيدة فاطمة الزهراء عليها السلام على رواية"},
+            {"month": "جمادى الآخرة", "day": "13", "occasion": "وفاة أم البنين عليها السلام"},
+            {"month": "جمادى الآخرة", "day": "20", "occasion": "ولادة فاطمة الزهراء عليها السلام"},
+            {"month": "رجب", "day": "1", "occasion": "ولادة الإمام علي بن محمد الباقر عليه السلام"},
+            {"month": "رجب", "day": "2", "occasion": "وفاة الإمام علي بن محمد الهادي عليه السلام"},
+            {"month": "رجب", "day": "3", "occasion": "ولادة الإمام علي بن محمد الهادي عليه السلام"},
+            {"month": "رجب", "day": "10", "occasion": "ولادة الإمام محمد بن علي الجواد عليه السلام"},
+            {"month": "رجب", "day": "13", "occasion": "ولادة الإمام علي بن ابي طالب عليه السلام"},
+            {"month": "رجب", "day": "15", "occasion": "وفاة السيدة زينب بنت علي عليهما السلام"},
+            {"month": "رجب", "day": "25", "occasion": "استشهاد الامام الكاظم عليه السلام"},
+            {"month": "رجب", "day": "26", "occasion": "وفاة ابي طالب عليه السلام"},
+            {"month": "رجب", "day": "27", "occasion": "بعثة النبي صلى الله عليه و آله و سلم"},
+            {"month": "ربيع الأول", "day": "8", "occasion": "شهادة الامام الحسن العسكري عليه السلام"},
+            {"month": "ربيع الأول", "day": "10", "occasion": "وفاة عبد المطلب عليه السلام"},
+            {"month": "ربيع الأول", "day": "12", "occasion": "ولادة النبي صلى الله عليه و آله على رواية"},
+            {"month": "ربيع الأول", "day": "17", "occasion": "ولادة النبي صلى الله عليه و آله وولادة الإمام جعفر الصادق عليه السلام"},
+            {"month": "ربيع الآخر", "day": "8", "occasion": "شهادة السيدة فاطمة الزهراء عليها السلام على رواية"},
+            {"month": "ربيع الآخر", "day": "10", "occasion": "ولادة الإمام الحسن العسكري عليه السلام"},
+            {"month": "ذي القعدة", "day": "11", "occasion": "ولادة الإمام علي بن موسى الرضا عليه السلام"},
+            {"month": "ذي القعدة", "day": "25", "occasion": "يوم دحو الأرض"},
+            {"month": "ذي القعدة", "day": "آخر الشهر", "occasion": "شهادة الامام محمد الجواد عليه السلام"},
+            {"month": "ذي الحجة", "day": "1", "occasion": "زواج امير المؤمنين عليه السلام من فاطمة الزهراء عليها السلام"},
+            {"month": "ذي الحجة", "day": "7", "occasion": "شهادة الامام الباقر عليه السلام"},
+            {"month": "ذي الحجة", "day": "9", "occasion": "شهادة مسلم بن عقيل عليه السلام"},
+            {"month": "ذي الحجة", "day": "10", "occasion": "عيد الأضحى"},
+            {"month": "ذي الحجة", "day": "18", "occasion": "عيد الغدير"},
+            {"month": "ذي الحجة", "day": "24", "occasion": "يوم المباهلة"},
+            {"month": "محرم", "day": "10", "occasion": "يوم إستشهاد الحسين عليه السلام"},
+            {"month": "محرم", "day": "25", "occasion": "إستشهاد الإمام علي بن الحسين عليه السلام"},
+            {"month": "صفر", "day": "3", "occasion": "والدة الإمام الباقر عليه السلام"},
+            {"month": "صفر", "day": "7", "occasion": "إستشهاد الإمام الحسن بن علي عليه السلام"},
+            {"month": "صفر", "day": "20", "occasion": "أربعين الإمام الحسين عليه السلام"},
+            {"month": "صفر", "day": "28", "occasion": "إستشهاد النبي صلى الله عليه و آله"},
+            {"month": "صفر", "day": "آخر الشهر", "occasion": "إستشهاد الإمام الرضا عليه السلام"},
+            {"month": "شعبان", "day": "3", "occasion": "ولادة الإمام الحسين عليه السلام"},
+            {"month": "شعبان", "day": "4", "occasion": "ولادة العباس عليه السلام"},
+            {"month": "شعبان", "day": "5", "occasion": "ولادة الإمام علي بن الحسين عليه السلام"},
+            {"month": "شعبان", "day": "15", "occasion": "ولادة الإمام المهدي عليه السلام"}
+        ];
 
         // Mansion data
         const mansions = [
@@ -484,6 +652,7 @@
         let todayIndex = 0;
         let baseGregYear = 2025;
         let baseIndex = 0;
+        let simulatedTime = null;
 
         // Function to check leap year
         function isLeapYear(year) {
@@ -538,26 +707,45 @@
                 dayName = `${day} ${months[monthIndex]}`;
             }
 
-            // Format Gregorian date with Syriac months
-            const standardDate = baseDate.toLocaleDateString('ar-EG', { 
-                weekday: 'long', 
-                day: 'numeric', 
-                month: 'long', 
-                year: 'numeric', 
-                timeZone: selectedTimezone 
-            });
-            const parts = standardDate.split(' ');
-            const monthIndex = parts.findIndex(part => Object.keys(syriacMonths).includes(part));
-            if (monthIndex !== -1) {
-                parts[monthIndex] = syriacMonths[parts[monthIndex]];
-            }
-            const gregorianDate = parts.join(' ');
+            const dayNum = baseDate.getDate();
+            const monthNum = baseDate.getMonth() + 1;
+            const syriacMonth = syriacMonths[monthNum - 1];
+            const gregorianDate = `الموافق ${dayNum} ${syriacMonth} ${gregYear} (التقويم الشمسي الحالي)`;
 
             return { 
                 text: `${dayOfWeek} ${dayName} لسنة ${customYear} من الهجرة (تقويم محمدى)`, 
                 date: baseDate, 
-                gregorian: gregorianDate 
+                gregorian: gregorianDate,
+                year: customYear
             };
+        }
+
+        // Function to get occasion
+        function getOccasion(index, year) {
+            const isEndYearLeap = isLeapYear(year + 1);
+            let currentMonth, currentDay;
+            if (index >= 360) {
+                currentMonth = null;
+                const specialDays = isEndYearLeap ? [...baseSpecialDays, "يوم التقويم السادس"] : [...baseSpecialDays];
+                currentDay = specialDays[index - 360];
+            } else {
+                const monthIndex = Math.floor(index / 30);
+                currentMonth = months[monthIndex];
+                currentDay = (index % 30) + 1;
+            }
+
+            for (const occ of occasions) {
+                if (currentMonth && occ.month === currentMonth && occ.day == currentDay) {
+                    return occ.occasion;
+                }
+                if (occ.day === "آخر الشهر" && (
+                    (index === 359 && occ.month === currentMonth) ||
+                    (index === (isEndYearLeap ? 365 : 364) && currentDay === (isEndYearLeap ? "يوم التقويم السادس" : "يوم التقويم الخامس"))
+                )) {
+                    return occ.occasion;
+                }
+            }
+            return null;
         }
 
         // Function to get mansion info
@@ -599,19 +787,126 @@
             });
         }
 
-        // Update Muhammadan date, Gregorian date, and mansion info
+        // Function to get time when sun is at specific altitude
+        function getTimeAtAltitude(date, lat, lng, targetAltitudeDegrees, startTime) {
+            const targetAltitude = targetAltitudeDegrees * Math.PI / 180;
+            let low = startTime.getTime();
+            let high = low + 2 * 60 * 60 * 1000; // 2 hours after
+            while (high - low > 1000) { // 1 second precision
+                const mid = (low + high) / 2;
+                const midDate = new Date(mid);
+                const position = SunCalc.getPosition(midDate, lat, lng);
+                if (position.altitude > targetAltitude) {
+                    low = mid;
+                } else {
+                    high = mid;
+                }
+            }
+            return new Date(low);
+        }
+
+        // Function to format remaining time
+        function formatRemainingTime(milliseconds) {
+            const totalSeconds = Math.floor(milliseconds / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return `${hours} ساعة ${minutes} دقيقة ${seconds} ثانية`;
+        }
+
+        // Function to find the next prayer time
+        function getNextPrayerTime(currentTime, prayerTimes, currentDate) {
+            const prayerList = [
+                { name: 'الإمساك', time: prayerTimes.astronomicalDawn, display: 'الإمساك' },
+                { name: 'صلاة الفجر', time: prayerTimes.nauticalDawn, display: 'صلاة الفجر' },
+                { name: 'طلوع الشمس', time: prayerTimes.sunrise, display: 'طلوع الشمس' },
+                { name: 'صلاة الظهر', time: prayerTimes.solarNoon, display: 'صلاة الظهر' },
+                { name: 'غروب الشمس', time: prayerTimes.sunset, display: 'غروب الشمس' },
+                { name: 'صلاة المغرب', time: prayerTimes.ishaTime, display: 'صلاة المغرب (غياب الحمرة المشرقية)' },
+                { name: 'وقت الإفطار', time: prayerTimes.iftar, display: 'وقت الإفطار' },
+                { name: 'صلاة الليل', time: prayerTimes.nightPrayer, display: 'صلاة الليل (منتصف الليل)' }
+            ];
+
+            const currentTimeMs = currentTime.getTime();
+            let nextPrayer = null;
+            let minDiff = Infinity;
+
+            // Ensure prayer times are set to the correct date (currentDate)
+            for (const prayer of prayerList) {
+                const prayerDate = new Date(prayer.time);
+                prayerDate.setFullYear(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+                const prayerTimeMs = prayerDate.getTime();
+                const diff = prayerTimeMs - currentTimeMs;
+                if (diff > 0 && diff < minDiff) {
+                    minDiff = diff;
+                    nextPrayer = { ...prayer, time: prayerDate };
+                }
+            }
+
+            // If no prayer is found for today, check tomorrow's Imsak
+            if (!nextPrayer) {
+                const tomorrow = new Date(currentDate);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const selectedCity = document.getElementById('city-select').value;
+                const city = cities[selectedCity];
+                const timesTomorrow = SunCalc.getTimes(tomorrow, city.lat, city.lng);
+                const tomorrowImsak = timesTomorrow.nightEnd;
+                const diff = tomorrowImsak.getTime() - currentTimeMs;
+                nextPrayer = { name: 'الإمساك', time: tomorrowImsak, display: 'الإمساك' };
+                minDiff = diff;
+            }
+
+            return { name: nextPrayer.display, time: nextPrayer.time, remaining: minDiff };
+        }
+
+        // Update current time and remaining time to next prayer
         function updateCurrentTime() {
             const { index, year } = getTodayIndexAndYear();
             todayIndex = index;
             todayGregYear = year;
-            const { text, gregorian } = getCustomDate(baseIndex, baseGregYear);
+            const { text, gregorian, date } = getCustomDate(baseIndex, baseGregYear);
             document.getElementById('muhammadan-date').textContent = text;
             document.getElementById('gregorian-date').textContent = gregorian;
 
+            // Update occasion
+            const occasion = getOccasion(baseIndex, baseGregYear);
+            document.getElementById('occasion-info').textContent = occasion ? `المناسبات: ${occasion}` : 'المناسبات: لا يوجد';
+
             const mansion = getMansionInfo(baseIndex, baseGregYear);
-            document.getElementById('mansion-info').textContent = mansion 
-                ? `الطالع بالغداة: ${mansion["الطالع بالغداة"]} | الغارب بالغداة: ${mansion["الغارب بالغداة"]} | يقول ساجع العرب: ${mansion["يقول ساجع العرب"]}`
-                : 'لا توجد معلومات عن المنزلة';
+            document.getElementById('mansion-info-rising').textContent = mansion ? `الطالع بالغداة: ${mansion["الطالع بالغداة"]}` : 'الطالع بالغداة: --';
+            document.getElementById('mansion-info-setting').textContent = mansion ? `الغارب بالغداة: ${mansion["الغارب بالغداة"]}` : 'الغارب بالغداة: --';
+            document.getElementById('mansion-info-quote').textContent = mansion ? `يقول ساجع العرب: ${mansion["يقول ساجع العرب"]}` : 'يقول ساجع العرب: --';
+
+            const currentTime = simulatedTime || new Date(new Date().toLocaleString('en-US', { timeZone: selectedTimezone }));
+            document.getElementById('current-time').textContent = `الوقت الآن: ${formatTime(currentTime)}`;
+
+            const selectedCity = document.getElementById('city-select').value;
+            const city = cities[selectedCity];
+            const timesToday = SunCalc.getTimes(date, city.lat, city.lng);
+
+            const sunset = timesToday.sunset;
+            const nauticalDawn = timesToday.nauticalDawn;
+            const difference = sunset.getTime() - nauticalDawn.getTime();
+            const half = difference / 2;
+            const nightPrayer = new Date(sunset.getTime() + half);
+
+            let ishaTime = getTimeAtAltitude(date, city.lat, city.lng, -4, timesToday.sunset);
+            ishaTime = new Date(ishaTime.getTime() + 2 * 60 * 1000);
+            const iftar = new Date(ishaTime.getTime() + 15 * 60 * 1000);
+
+            const prayerTimes = {
+                astronomicalDawn: timesToday.nightEnd,
+                nauticalDawn: timesToday.nauticalDawn,
+                sunrise: timesToday.sunrise,
+                solarNoon: timesToday.solarNoon,
+                sunset: timesToday.sunset,
+                ishaTime: ishaTime,
+                iftar: iftar,
+                nightPrayer: nightPrayer
+            };
+
+            const nextPrayer = getNextPrayerTime(currentTime, prayerTimes, date);
+            document.getElementById('remaining-time').textContent = `متبقى ${formatRemainingTime(nextPrayer.remaining)} على ${nextPrayer.name}`;
         }
 
         // Update solar times and coordinates for selected city and date
@@ -630,16 +925,163 @@
                 const half = difference / 2;
                 const nightPrayer = new Date(sunset.getTime() + half);
 
+                let ishaTime = getTimeAtAltitude(date, city.lat, city.lng, -4, timesToday.sunset);
+                ishaTime = new Date(ishaTime.getTime() + 2 * 60 * 1000);
+                const iftar = new Date(ishaTime.getTime() + 15 * 60 * 1000);
+
+                document.getElementById('astronomical-dawn').textContent = formatTime(timesToday.nightEnd);
                 document.getElementById('nautical-twilight-start').textContent = formatTime(timesToday.nauticalDawn);
                 document.getElementById('sunrise').textContent = formatTime(timesToday.sunrise);
                 document.getElementById('solar-noon').textContent = formatTime(timesToday.solarNoon);
                 document.getElementById('sunset').textContent = formatTime(timesToday.sunset);
-                document.getElementById('civil-twilight-end').textContent = formatTime(timesToday.dusk);
+                document.getElementById('civil-twilight-end').textContent = formatTime(ishaTime);
+                document.getElementById('iftar').textContent = formatTime(iftar);
                 document.getElementById('night-prayer').textContent = formatTime(nightPrayer);
                 document.getElementById('coordinates').textContent = `الإحداثيات: ${city.lat.toFixed(4)}° شمالاً، ${city.lng.toFixed(4)}° شرقاً`;
                 solarTimesDiv.classList.remove('opacity-50');
             }, 300);
         }
+
+        // Conversion functions for the calendar conversion tool
+        function populateConversionPickers() {
+            const customMonth = document.getElementById('conversion-custom-month');
+            const customDay = document.getElementById('conversion-custom-day');
+            const customYear = document.getElementById('conversion-custom-year');
+
+            customMonth.innerHTML = '<option value="">اختر الشهر</option>';
+            months.forEach((month, i) => {
+                customMonth.innerHTML += `<option value="${i}">${month}</option>`;
+            });
+            customMonth.innerHTML += `<option value="special">أيام التقويم</option>`;
+
+            customYear.innerHTML = '';
+            for (let y = 1400; y <= 1500; y++) {
+                customYear.innerHTML += `<option value="${y}">${y}</option>`;
+            }
+
+            function updateConversionDays() {
+                const monthValue = customMonth.value;
+                customDay.innerHTML = '<option value="">اختر اليوم</option>';
+                if (monthValue === "") return;
+                if (monthValue === "special") {
+                    const isEndYearLeap = isLeapYear(baseGregYear + 1);
+                    const maxDays = isEndYearLeap ? 6 : 5;
+                    const specialDays = isEndYearLeap ? [...baseSpecialDays, "يوم التقويم السادس"] : [...baseSpecialDays];
+                    for (let i = 1; i <= maxDays; i++) {
+                        customDay.innerHTML += `<option value="${i}">${specialDays[i - 1]}</option>`;
+                    }
+                } else {
+                    for (let i = 1; i <= 30; i++) {
+                        customDay.innerHTML += `<option value="${i}">${i}</option>`;
+                    }
+                }
+            }
+
+            customMonth.addEventListener('change', updateConversionDays);
+            updateConversionDays();
+        }
+
+        function updateConversionDisplay() {
+            const { text, gregorian, date, year } = getCustomDate(baseIndex, baseGregYear);
+            document.getElementById('conversion-muhammadan-date').textContent = text;
+            document.getElementById('conversion-gregorian-date').textContent = gregorian;
+            
+            const occasion = getOccasion(baseIndex, baseGregYear);
+            document.getElementById('conversion-occasion').textContent = occasion ? `المناسبات: ${occasion}` : 'المناسبات: لا يوجد';
+            
+            // Update the conversion pickers
+            const customMonth = document.getElementById('conversion-custom-month');
+            const customDay = document.getElementById('conversion-custom-day');
+            const customYear = document.getElementById('conversion-custom-year');
+            
+            const isEndYearLeap = isLeapYear(baseGregYear + 1);
+            
+            if (baseIndex >= 360) {
+                customMonth.value = "special";
+                customDay.innerHTML = '<option value="">اختر اليوم</option>';
+                const maxDays = isEndYearLeap ? 6 : 5;
+                const specialDays = isEndYearLeap ? [...baseSpecialDays, "يوم التقويم السادس"] : [...baseSpecialDays];
+                for (let i = 1; i <= maxDays; i++) {
+                    customDay.innerHTML += `<option value="${i}">${specialDays[i - 1]}</option>`;
+                }
+                customDay.value = baseIndex - 359;
+            } else {
+                const monthIndex = Math.floor(baseIndex / 30);
+                const day = (baseIndex % 30) + 1;
+                customMonth.value = monthIndex;
+                customDay.innerHTML = '<option value="">اختر اليوم</option>';
+                for (let i = 1; i <= 30; i++) {
+                    customDay.innerHTML += `<option value="${i}">${i}</option>`;
+                }
+                customDay.value = day;
+            }
+            customYear.value = year;
+            
+            // Update the Gregorian date picker
+            const gregorianPicker = document.getElementById('conversion-gregorian-picker');
+            const yearStr = date.getFullYear();
+            const monthStr = String(date.getMonth() + 1).padStart(2, '0');
+            const dayStr = String(date.getDate()).padStart(2, '0');
+            gregorianPicker.value = `${yearStr}-${monthStr}-${dayStr}`;
+        }
+
+        function handleConversionGregorianPicker() {
+            const selectedDate = new Date(document.getElementById('conversion-gregorian-picker').value);
+            let year = selectedDate.getFullYear();
+            const calendarStart = new Date(year, 9, 16);
+            if (selectedDate < calendarStart) {
+                year--;
+            }
+            baseGregYear = year;
+            const timeDiff = selectedDate - new Date(year, 9, 16);
+            baseIndex = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            document.getElementById('slider').value = baseIndex;
+            updateCurrentTime();
+            updateSolarTimes();
+            updateConversionDisplay();
+        }
+
+        function handleConversionMuhammadanPicker() {
+            const customMonth = document.getElementById('conversion-custom-month');
+            const customDay = document.getElementById('conversion-custom-day');
+            const customYear = document.getElementById('conversion-custom-year');
+            
+            const monthValue = customMonth.value;
+            const dayValue = customDay.value;
+            const yearValue = parseInt(customYear.value);
+            
+            if (monthValue === "" || dayValue === "" || isNaN(yearValue)) return;
+
+            let index;
+            if (monthValue === "special") {
+                index = 360 + (parseInt(dayValue) - 1);
+            } else {
+                index = parseInt(monthValue) * 30 + (parseInt(dayValue) - 1);
+            }
+
+            const gregYear = yearValue - 1404 + 2024;
+            const baseDate = new Date(gregYear, 9, 16);
+            baseDate.setDate(baseDate.getDate() + index);
+            const isBeforeCutoff = baseDate.getMonth() < 9 || (baseDate.getMonth() === 9 && baseDate.getDate() < 16);
+            baseGregYear = isBeforeCutoff ? gregYear + 1 : gregYear;
+            baseIndex = index;
+            document.getElementById('slider').value = baseIndex;
+            updateCurrentTime();
+            updateSolarTimes();
+            updateConversionDisplay();
+        }
+
+        // Time slider for testing
+        const timeSlider = document.getElementById('time-slider');
+        timeSlider.addEventListener('input', () => {
+            const minutes = parseInt(timeSlider.value);
+            const hours = Math.floor(minutes / 60);
+            const mins = minutes % 60;
+            const { date } = getCustomDate(baseIndex, baseGregYear);
+            simulatedTime = new Date(date);
+            simulatedTime.setHours(hours, mins, 0, 0);
+            updateCurrentTime();
+        });
 
         // Navigation event listeners
         const slider = document.getElementById('slider');
@@ -661,6 +1103,7 @@
             }
             updateCurrentTime();
             updateSolarTimes();
+            updateConversionDisplay();
         });
 
         prevYear.addEventListener('click', () => {
@@ -674,6 +1117,7 @@
             slider.value = baseIndex;
             updateCurrentTime();
             updateSolarTimes();
+            updateConversionDisplay();
         });
 
         nextYear.addEventListener('click', () => {
@@ -687,6 +1131,7 @@
             slider.value = baseIndex;
             updateCurrentTime();
             updateSolarTimes();
+            updateConversionDisplay();
         });
 
         prevCustomMonth.addEventListener('click', () => {
@@ -707,6 +1152,7 @@
             slider.value = baseIndex;
             updateCurrentTime();
             updateSolarTimes();
+            updateConversionDisplay();
         });
 
         nextCustomMonth.addEventListener('click', () => {
@@ -729,6 +1175,7 @@
             slider.value = baseIndex;
             updateCurrentTime();
             updateSolarTimes();
+            updateConversionDisplay();
         });
 
         prevDay.addEventListener('click', () => {
@@ -744,6 +1191,7 @@
             slider.value = baseIndex;
             updateCurrentTime();
             updateSolarTimes();
+            updateConversionDisplay();
         });
 
         nextDay.addEventListener('click', () => {
@@ -759,6 +1207,7 @@
             slider.value = baseIndex;
             updateCurrentTime();
             updateSolarTimes();
+            updateConversionDisplay();
         });
 
         resetDay.addEventListener('click', () => {
@@ -766,9 +1215,23 @@
             baseGregYear = todayGregYear;
             slider.max = isLeapYear(baseGregYear + 1) ? 365 : 364;
             slider.value = baseIndex;
+            simulatedTime = null;
+            timeSlider.value = 0;
             updateCurrentTime();
             updateSolarTimes();
+            updateConversionDisplay();
         });
+
+        // Conversion tool event listeners
+        const conversionGregorianPicker = document.getElementById('conversion-gregorian-picker');
+        const conversionCustomMonth = document.getElementById('conversion-custom-month');
+        const conversionCustomDay = document.getElementById('conversion-custom-day');
+        const conversionCustomYear = document.getElementById('conversion-custom-year');
+
+        conversionGregorianPicker.addEventListener('change', handleConversionGregorianPicker);
+        conversionCustomMonth.addEventListener('change', handleConversionMuhammadanPicker);
+        conversionCustomDay.addEventListener('change', handleConversionMuhammadanPicker);
+        conversionCustomYear.addEventListener('change', handleConversionMuhammadanPicker);
 
         // Initial update
         const { index, year } = getTodayIndexAndYear();
@@ -778,11 +1241,18 @@
         baseGregYear = year;
         slider.max = isLeapYear(baseGregYear + 1) ? 365 : 364;
         slider.value = baseIndex;
+        
+        populateConversionPickers();
         updateCurrentTime();
         updateSolarTimes();
+        updateConversionDisplay();
 
         // Update every second
-        setInterval(updateCurrentTime, 1000);
+        setInterval(() => {
+            if (!simulatedTime) {
+                updateCurrentTime();
+            }
+        }, 1000);
 
         // Update solar times when city changes
         document.getElementById('city-select').addEventListener('change', updateSolarTimes);
