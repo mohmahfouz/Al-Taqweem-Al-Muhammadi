@@ -55,6 +55,9 @@
         .header-titles { text-align: right; }
         .mansion-nav { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; }
         .picker-group { flex: 1; min-width: 120px; display: flex; flex-direction: column; align-items: stretch; }
+        .tabs { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .tab { padding: 0.75rem 1.5rem; background: #1B4D3E; color: #FDF6E3; border-radius: 0.5rem 0.5rem 0 0; cursor: pointer; transition: background 0.3s; }
+        .tab.active { background: #F5E9D6; color: #1B4D3E; }
     </style>
 </head>
 <body>
@@ -65,17 +68,6 @@
                 <p class="subtitle">مع مواقيت الصلاة و أداة للمقابلة</p>
             </div>
             <a href="index.html" download class="save-link">حفظ الصفحة</a>
-        </div>
-        
-        <div class="today-container">
-            <h3>اليوم</h3>
-            <p id="muhammadan-date">--</p>
-            <p id="gregorian-date">--</p>
-            <p id="occasion-info" class="occasion-info">المناسبات: --</p>
-            <h3>حركة الشمس فى منازلها</h3>
-            <p id="today-mansion-info-rising">الطالع بالغداة: --</p>
-            <p id="today-mansion-info-setting">الغارب بالغداة: --</p>
-            <p id="today-mansion-info-quote">يقول ساجع العرب: --</p>
         </div>
         
         <div class="info-container">
@@ -89,8 +81,25 @@
                 مؤسسة الحلة للدراسات الإنسانية والعلمية والدينية/ بـــــابـــــــل
             </a>
         </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="today">اليوم</div>
+            <div class="tab" data-tab="prayer">مواقيت الصلاة</div>
+            <div class="tab" data-tab="conversion">المقابلة</div>
+        </div>
         
-        <div id="solar-times">
+        <div class="today-container">
+            <h3>اليوم</h3>
+            <p id="muhammadan-date">--</p>
+            <p id="gregorian-date">--</p>
+            <p id="occasion-info" class="occasion-info">المناسبات: --</p>
+            <h3>حركة الشمس فى منازلها</h3>
+            <p id="today-mansion-info-rising">الطالع بالغداة: --</p>
+            <p id="today-mansion-info-setting">الغارب بالغداة: --</p>
+            <p id="today-mansion-info-quote">يقول ساجع العرب: --</p>
+        </div>
+        
+        <div id="solar-times" style="display: none;">
             <div class="time-card">
                 <select id="city-select" aria-label="اختر المدينة">
                     <option value="najaf" selected>النجف، العراق</option>
@@ -116,7 +125,7 @@
             </div>
         </div>
         
-        <div class="conversion-container">
+        <div class="conversion-container" style="display: none;">
             <h2>المقابلة بين التقويم المحمدي والتقويم الشمسي الحالي (الميلادي)</h2>
             
             <div class="conversion-navigation">
@@ -698,6 +707,23 @@
         document.getElementById('conversion-custom-day').addEventListener('change', handleConversionMuhammadanPicker);
         document.getElementById('conversion-custom-year').addEventListener('change', handleConversionMuhammadanPicker);
         document.getElementById('city-select').addEventListener('change', () => { updatePrayerTimes(); updateTodaySection(); });
+
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab');
+        const contents = {
+            today: document.querySelector('.today-container'),
+            prayer: document.getElementById('solar-times'),
+            conversion: document.querySelector('.conversion-container')
+        };
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                Object.values(contents).forEach(c => c.style.display = 'none');
+                contents[tab.dataset.tab].style.display = 'block';
+            });
+        });
 
         const { index, year } = getTodayIndexAndYear();
         todayIndex = index;
