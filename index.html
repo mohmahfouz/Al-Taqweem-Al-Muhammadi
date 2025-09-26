@@ -111,17 +111,25 @@
                 </select>
                 <p id="coordinates">الإحداثيات: --</p>
                 <p id="current-time">--</p>
-                <input type="range" id="time-slider" min="0" max="1439" value="0">
+                <input type="range" id="time-slider" min="0" max="1440" value="0">
                 <p id="remaining-time">--</p>
                 <h2>مواقيت الصلاة</h2>
-                <p><strong>الإمساك</strong>: <span id="astronomical-dawn">--</span></p>
                 <p><strong>صلاة الفجر</strong>: <span id="nautical-twilight-start">--</span></p>
                 <p><strong>طلوع الشمس</strong>: <span id="sunrise">--</span></p>
                 <p><strong>صلاة الظهر</strong>: <span id="solar-noon">--</span></p>
                 <p><strong>غروب الشمس</strong>: <span id="sunset">--</span></p>
                 <p><strong>صلاة المغرب</strong>: <span id="civil-twilight-end">--</span></p>
+            </div>
+            <div class="time-card">
+                <h2>أوقات إضافية</h2>
                 <p><strong>وقت الإفطار</strong>: <span id="iftar">--</span></p>
                 <p><strong>منتصف الليل</strong>: <span id="night-prayer">--</span></p>
+                <p><strong>الإمساك</strong>: <span id="astronomical-dawn">--</span></p>
+            </div>
+            <div class="time-card">
+                <h2>الشفق</h2>
+                <p><strong>بداية الشفق الملاحى للفجر</strong>: <span id="nautical-twilight-start2">--</span></p>
+                <p><strong>نهاية الشفق المدنى</strong>: <span id="civil-twilight-end2">--</span></p>
             </div>
         </div>
         
@@ -272,6 +280,8 @@
         let baseIndex = 0;
         let simulatedTime = null;
         let isPickerChange = false;
+        let currentPrayerDate = null;
+        let prayerTimes = null;
 
         function isLeapYear(year) {
             return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
@@ -391,14 +401,10 @@
 
         function getNextPrayerTime(currentTime, prayerTimes, date, lat, lng) {
             const prayerList = [
-                { name: 'الإمساك', display: 'الإمساك', time: prayerTimes.astronomicalDawn },
                 { name: 'صلاة الفجر', display: 'صلاة الفجر', time: prayerTimes.nauticalDawn },
                 { name: 'طلوع الشمس', display: 'طلوع الشمس', time: prayerTimes.sunrise },
                 { name: 'صلاة الظهر', display: 'صلاة الظهر', time: prayerTimes.solarNoon },
-                { name: 'غروب الشمس', display: 'غروب الشمس', time: prayerTimes.sunset },
-                { name: 'صلاة المغرب', display: 'صلاة المغرب', time: prayerTimes.civilTwilightEnd },
-                { name: 'وقت الإفطار', display: 'وقت الإفطار', time: prayerTimes.iftar },
-                { name: 'منتصف الليل', display: 'منتصف الليل', time: prayerTimes.nightPrayer }
+                { name: 'صلاة المغرب', display: 'صلاة المغرب', time: prayerTimes.civilTwilightEnd }
             ];
 
             const currentTimeMs = currentTime.getTime();
@@ -422,8 +428,10 @@
                 tomorrow.setDate(tomorrow.getDate() + 1);
                 const tomorrowPrayerTimes = getPrayerTimes(tomorrow, lat, lng);
                 const tomorrowList = [
-                    { name: 'الإمساك', display: 'الإمساك', time: tomorrowPrayerTimes.astronomicalDawn },
-                    { name: 'صلاة الفجر', display: 'صلاة الفجر', time: tomorrowPrayerTimes.nauticalDawn }
+                    { name: 'صلاة الفجر', display: 'صلاة الفجر', time: tomorrowPrayerTimes.nauticalDawn },
+                    { name: 'طلوع الشمس', display: 'طلوع الشمس', time: tomorrowPrayerTimes.sunrise },
+                    { name: 'صلاة الظهر', display: 'صلاة الظهر', time: tomorrowPrayerTimes.solarNoon },
+                    { name: 'صلاة المغرب', display: 'صلاة المغرب', time: tomorrowPrayerTimes.civilTwilightEnd }
                 ];
 
                 for (const prayer of tomorrowList) {
@@ -435,15 +443,6 @@
                         nextPrayer = prayer;
                     }
                 }
-            }
-
-            // If still no prayer is found, default to next day's Imsak
-            if (!nextPrayer) {
-                const tomorrow = new Date(date);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                const tomorrowPrayerTimes = getPrayerTimes(tomorrow, lat, lng);
-                nextPrayer = { name: 'الإمساك', display: 'الإمساك', time: tomorrowPrayerTimes.astronomicalDawn };
-                minDiff = tomorrowPrayerTimes.astronomicalDawn.getTime() - currentTimeMs;
             }
 
             return { name: nextPrayer.display, time: nextPrayer.time, remaining: minDiff };
@@ -459,20 +458,14 @@
             document.getElementById('today-mansion-info-rising').textContent = mansion ? `الطالع بالغداة: ${mansion["الطالع بالغداة"]}` : 'الطالع بالغداة: --';
             document.getElementById('today-mansion-info-setting').textContent = mansion ? `الغارب بالغداة: ${mansion["الغارب بالغداة"]}` : 'الغارب بالغداة: --';
             document.getElementById('today-mansion-info-quote').textContent = mansion ? `يقول ساجع العرب: ${mansion["يقول ساجع العرب"]}` : 'يقول ساجع العرب: --';
+        }
+
+        function updatePrayerSection() {
             const currentUTC = simulatedTime || new Date();
             document.getElementById('current-time').textContent = `الوقت الآن: ${formatTime(currentUTC)}`;
             const selectedCity = document.getElementById('city-select').value;
             const city = cities[selectedCity];
-            const prayerTimes = getPrayerTimes(date, city.lat, city.lng);
-            const nextPrayer = getNextPrayerTime(currentUTC, prayerTimes, date, city.lat, city.lng);
-            document.getElementById('remaining-time').textContent = `متبقى ${formatRemainingTime(nextPrayer.remaining)} على ${nextPrayer.name}`;
-        }
-
-        function updatePrayerTimes() {
-            const selectedCity = document.getElementById('city-select').value;
-            const city = cities[selectedCity];
-            const { date } = getCustomDate(todayIndex, todayGregYear);
-            const prayerTimes = getPrayerTimes(date, city.lat, city.lng);
+            prayerTimes = getPrayerTimes(currentPrayerDate, city.lat, city.lng);
             document.getElementById('astronomical-dawn').textContent = formatTime(prayerTimes.astronomicalDawn);
             document.getElementById('nautical-twilight-start').textContent = formatTime(prayerTimes.nauticalDawn);
             document.getElementById('sunrise').textContent = formatTime(prayerTimes.sunrise);
@@ -481,7 +474,11 @@
             document.getElementById('civil-twilight-end').textContent = formatTime(prayerTimes.civilTwilightEnd);
             document.getElementById('iftar').textContent = formatTime(prayerTimes.iftar);
             document.getElementById('night-prayer').textContent = formatTime(prayerTimes.nightPrayer);
+            document.getElementById('nautical-twilight-start2').textContent = formatTime(prayerTimes.nauticalDawn);
+            document.getElementById('civil-twilight-end2').textContent = formatTime(prayerTimes.civilTwilightEnd);
             document.getElementById('coordinates').textContent = `الإحداثيات: ${city.lat.toFixed(4)}° شمالاً، ${city.lng.toFixed(4)}° شرقاً`;
+            const nextPrayer = getNextPrayerTime(currentUTC, prayerTimes, currentPrayerDate, city.lat, city.lng);
+            document.getElementById('remaining-time').textContent = `متبقى ${formatRemainingTime(nextPrayer.remaining)} على ${nextPrayer.name}`;
         }
 
         function populateConversionPickers() {
@@ -584,13 +581,15 @@
         }
 
         document.getElementById('time-slider').addEventListener('input', () => {
-            const minutes = parseInt(document.getElementById('time-slider').value);
-            const hours = Math.floor(minutes / 60);
-            const mins = minutes % 60;
-            const { date } = getCustomDate(todayIndex, todayGregYear);
-            simulatedTime = new Date(date);
-            simulatedTime.setHours(hours, mins, 0, 0);
-            updateTodaySection();
+            const value = parseInt(document.getElementById('time-slider').value);
+            const currentRealTime = new Date();
+            const simulatedTimestamp = currentRealTime.getTime() + value * 60000;
+            simulatedTime = new Date(simulatedTimestamp);
+            const gregDate = new Date(simulatedTime.getFullYear(), simulatedTime.getMonth(), simulatedTime.getDate());
+            if (!currentPrayerDate || gregDate.getTime() !== currentPrayerDate.getTime()) {
+                currentPrayerDate = gregDate;
+            }
+            updatePrayerSection();
         });
 
         document.getElementById('slider').addEventListener('input', () => {
@@ -670,7 +669,9 @@
             document.getElementById('slider').value = baseIndex;
             simulatedTime = null;
             document.getElementById('time-slider').value = 0;
+            currentPrayerDate = getCustomDate(todayIndex, todayGregYear).date;
             updateTodaySection();
+            updatePrayerSection();
             updateConversionDisplay();
         });
 
@@ -706,7 +707,7 @@
         document.getElementById('conversion-custom-month').addEventListener('change', handleConversionMuhammadanPicker);
         document.getElementById('conversion-custom-day').addEventListener('change', handleConversionMuhammadanPicker);
         document.getElementById('conversion-custom-year').addEventListener('change', handleConversionMuhammadanPicker);
-        document.getElementById('city-select').addEventListener('change', () => { updatePrayerTimes(); updateTodaySection(); });
+        document.getElementById('city-select').addEventListener('change', () => { updatePrayerSection(); });
 
         // Tab functionality
         const tabs = document.querySelectorAll('.tab');
@@ -732,11 +733,17 @@
         baseGregYear = year;
         document.getElementById('slider').max = isLeapYear(baseGregYear + 1) ? 365 : 364;
         document.getElementById('slider').value = baseIndex;
+        currentPrayerDate = getCustomDate(todayIndex, todayGregYear).date;
         populateConversionPickers();
         updateTodaySection();
-        updatePrayerTimes();
+        updatePrayerSection();
         updateConversionDisplay();
-        setInterval(() => { if (!simulatedTime) updateTodaySection(); }, 1000);
+        setInterval(() => { 
+            if (!simulatedTime) {
+                updateTodaySection();
+                updatePrayerSection();
+            }
+        }, 1000);
     </script>
 </body>
 </html>
