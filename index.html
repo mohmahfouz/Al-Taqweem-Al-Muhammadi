@@ -454,7 +454,7 @@
             const gregorianDate = `الموافق ${dayNum} ${syriacMonth} ${gregYear} (التقويم الشمسي الحالي)`;
             return { text: `${dayOfWeek} ${dayName} لسنة ${customYear} من الهجرة (تقويم محمدى)`, date: baseDate, gregorian: gregorianDate, year: customYear };
         }
-
+        
         function getOccasion(index, year) {
             const isEndYearLeap = isLeapYear(year + 1);
             const specialDays = isEndYearLeap ? [...baseSpecialDays, "يوم التقويم السادس"] : [...baseSpecialDays];
@@ -462,11 +462,11 @@
             const currentDay = index >= 360 ? specialDays[index - 360] : (index % 30) + 1;
             for (const occ of occasions) {
                 if (currentMonth && occ.month === currentMonth && occ.day == currentDay) return occ.occasion;
-                if (occ.day === "آخر الشهر" && ((index === 359 && occ.month === currentMonth) || (index === (isEndYearLeap ? 365 : 364) && currentDay === (isEndYearLeap ? "يوم التقويم السادس" : "يوم التقويم الخامس")))) return occ.occasion;
+                if (occ.day === 30 && currentMonth && occ.month === currentMonth && currentDay === 30) return occ.occasion;
             }
             return null;
         }
-
+        
         function getMansionInfo(index, year) {
             const isEndYearLeap = isLeapYear(year + 1);
             if (isEndYearLeap && index === 365) return mansions[27];
