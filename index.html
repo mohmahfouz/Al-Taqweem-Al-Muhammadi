@@ -114,7 +114,7 @@
                 </select>
                 <p id="coordinates">الإحداثيات: --</p>
                 <p id="current-time">--</p>
-                <input type="range" id="time-slider" min="0" max="1440" value="0">
+                <input type="range" id="time-slider" min="0" max="1440" value="0" disabled>
                 <p id="remaining-time">--</p>
                 <h2>مواقيت الصلاة</h2>
                 <p><strong>صلاة الفجر</strong>: <span id="astronomical-twilight-start">--</span></p>
@@ -131,6 +131,7 @@
                 <h2>الشفق</h2>
                 <p><strong>بداية الشفق الملاحى للفجر (12 درجة تحت الأفق)</strong>: <span id="nautical-twilight-start">--</span></p>
                 <p><strong>نهاية الشفق المدنى للمغرب (6 درجات تحت الأفق)</strong>: <span id="civil-twilight-end2">--</span></p>
+                <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">طريقة الحساب: (جعفرى) - الفجر: 17.7°، المغرب: 4.5°</p>
             </div>
         </div>
 
@@ -190,16 +191,16 @@
     </div>
     <script>
         const cities = {
-            najaf: { lat: 32.02594, lng: 44.34625, name: 'النجف، العراق' },
-            karbala: { lat: 32.61603, lng: 44.02488, name: 'كربلاء، العراق' },
-            al_hilla: { lat: 32.46367, lng: 44.41963, name: 'الحلة، العراق' },
-            cairo: { lat: 30.06263, lng: 31.24967, name: 'القاهرة، مصر' },
-            alexandria: { lat: 31.21564, lng: 29.95527, name: 'الإسكندرية، مصر' },
-            port_said: { lat: 31.25654, lng: 32.28411, name: 'بورسعيد، مصر' }
+            najaf: { lat: 32.02594, lng: 44.34625, name: 'النجف، العراق', timezone: 'Asia/Baghdad' },
+            karbala: { lat: 32.61603, lng: 44.02488, name: 'كربلاء، العراق', timezone: 'Asia/Baghdad' },
+            al_hilla: { lat: 32.46367, lng: 44.41963, name: 'الحلة، العراق', timezone: 'Asia/Baghdad' },
+            cairo: { lat: 30.06263, lng: 31.24967, name: 'القاهرة، مصر', timezone: 'Africa/Cairo' },
+            alexandria: { lat: 31.21564, lng: 29.95527, name: 'الإسكندرية، مصر', timezone: 'Africa/Cairo' },
+            port_said: { lat: 31.25654, lng: 32.28411, name: 'بورسعيد، مصر', timezone: 'Africa/Cairo' }
         };
         const months = ["رمضان", "شوال", "جمادى الأولى", "جمادى الآخرة", "رجب", "ربيع الأول", "ربيع الآخر", "ذي القعدة", "ذي الحجة", "محرم", "صفر", "شعبان"];
         const baseSpecialDays = ["يوم التقويم الأول", "يوم التقويم الثاني", "يوم التقويم الثالث", "يوم التقويم الرابع", "يوم التقويم الخامس"];
-        const selectedTimezone = "Africa/Cairo";
+        let selectedTimezone = "Asia/Baghdad"; // Will be updated per city selection
         const syriacMonths = ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول'];
         const occasions = [
             {month: "رمضان", day: "1", occasion: "ليلة القدر"},
@@ -500,10 +501,11 @@
             return `${hours} ساعة ${minutes} دقيقة ${seconds} ثانية`;
         }
 
-        function getTimeAtAltitude(date, lat, lng, targetAltitudeDegrees, startTime) {
+        // Find time when sun reaches a specific altitude after a reference time (for setting events)
+        function getTimeAtAltitudeAfter(date, lat, lng, targetAltitudeDegrees, startTime) {
             const targetAltitude = targetAltitudeDegrees * Math.PI / 180;
             let low = startTime.getTime();
-            let high = low + 2 * 60 * 60 * 1000;
+            let high = low + 3 * 60 * 60 * 1000;
             while (high - low > 1000) {
                 const mid = (low + high) / 2;
                 const midDate = new Date(mid);
@@ -517,36 +519,68 @@
             return new Date(low);
         }
 
+        // Find time when sun rises to a specific altitude before a reference time (for rising events like Fajr)
+        function getTimeAtAltitudeBefore(date, lat, lng, targetAltitudeDegrees, endTime) {
+            const targetAltitude = targetAltitudeDegrees * Math.PI / 180;
+            let low = endTime.getTime() - 4 * 60 * 60 * 1000;
+            let high = endTime.getTime();
+            while (high - low > 1000) {
+                const mid = (low + high) / 2;
+                const midDate = new Date(mid);
+                const position = SunCalc.getPosition(midDate, lat, lng);
+                if (position.altitude < targetAltitude) {
+                    low = mid;
+                } else {
+                    high = mid;
+                }
+            }
+            return new Date(high);
+        }
+
+        // Shia Ithna Ashari prayer time calculation (Tehran/Jafari method)
+        // Fajr: sun at -17.7° (rising), Maghrib: sun at -4.5° (setting)
+        // Midnight: midpoint sunset to Fajr (Shia jurisprudence)
+        // Reference: Institute of Geophysics, University of Tehran / holynajaf.net
         function getPrayerTimes(date, lat, lng) {
             const times = SunCalc.getTimes(date, lat, lng);
             const sunset = times.sunset;
+            const sunrise = times.sunrise;
+
+            // Fajr: sun at -17.7° below horizon (Tehran/Shia method)
+            const fajrTime = getTimeAtAltitudeBefore(date, lat, lng, -17.7, sunrise);
+
+            // Maghrib: sun at -4.5° below horizon after sunset (Tehran/Shia method)
+            const maghribTime = getTimeAtAltitudeAfter(date, lat, lng, -4.5, sunset);
+
+            // Tomorrow's Fajr for midnight calculation
             const tomorrow = new Date(date);
             tomorrow.setDate(tomorrow.getDate() + 1);
-            const nextNauticalDawn = SunCalc.getTimes(tomorrow, lat, lng).nauticalDawn;
-            const difference = nextNauticalDawn.getTime() - sunset.getTime();
-            const half = difference / 2;
-            const nightPrayer = new Date(sunset.getTime() + half);
-            let maghribTime = getTimeAtAltitude(date, lat, lng, -4, sunset);
-            maghribTime = new Date(maghribTime.getTime() + 2 * 60 * 1000); // Add 2 minutes for Maghrib
+            const tomorrowTimes = SunCalc.getTimes(tomorrow, lat, lng);
+            const nextFajr = getTimeAtAltitudeBefore(tomorrow, lat, lng, -17.7, tomorrowTimes.sunrise);
+
+            // Midnight (Shia): midpoint between sunset and next Fajr
+            const nightDuration = nextFajr.getTime() - sunset.getTime();
+            const nightPrayer = new Date(sunset.getTime() + nightDuration / 2);
+
             return {
-                astronomicalDawn: times.nightEnd, // Used for Fajr
-                nauticalDawn: times.nauticalDawn,
-                sunrise: times.sunrise,
+                fajr: fajrTime, // Fajr at -17.7° (Tehran/Shia)
+                nauticalDawn: times.nauticalDawn, // -12° for reference
+                sunrise: sunrise,
                 solarNoon: times.solarNoon,
                 sunset: sunset,
-                civilTwilightEnd: maghribTime, // Maghrib at -4 degrees + 2 minutes
-                civilDusk: times.dusk, // Civil dusk at -6 degrees
+                maghrib: maghribTime, // Maghrib at -4.5° (Tehran/Shia)
+                civilDusk: times.dusk, // Civil dusk at -6° for reference
                 iftar: new Date(maghribTime.getTime() + 15 * 60 * 1000),
-                nightPrayer: nightPrayer
+                nightPrayer: nightPrayer // Shia midnight: midpoint sunset to Fajr
             };
         }
 
         function getNextPrayerTime(currentTime, prayerTimes, date, lat, lng) {
             const prayerList = [
-                { name: 'صلاة الفجر', display: 'صلاة الفجر', time: prayerTimes.astronomicalDawn },
+                { name: 'صلاة الفجر', display: 'صلاة الفجر', time: prayerTimes.fajr },
                 { name: 'طلوع الشمس', display: 'طلوع الشمس', time: prayerTimes.sunrise },
                 { name: 'صلاة الظهر', display: 'صلاة الظهر', time: prayerTimes.solarNoon },
-                { name: 'صلاة المغرب', display: 'صلاة المغرب', time: prayerTimes.civilTwilightEnd }
+                { name: 'صلاة المغرب', display: 'صلاة المغرب', time: prayerTimes.maghrib }
             ];
             const currentTimeMs = currentTime.getTime();
             let minDiff = Infinity;
@@ -565,10 +599,10 @@
                 tomorrow.setDate(tomorrow.getDate() + 1);
                 const tomorrowPrayerTimes = getPrayerTimes(tomorrow, lat, lng);
                 const tomorrowList = [
-                    { name: 'صلاة الفجر', display: 'صلاة الفجر', time: tomorrowPrayerTimes.astronomicalDawn },
+                    { name: 'صلاة الفجر', display: 'صلاة الفجر', time: tomorrowPrayerTimes.fajr },
                     { name: 'طلوع الشمس', display: 'طلوع الشمس', time: tomorrowPrayerTimes.sunrise },
                     { name: 'صلاة الظهر', display: 'صلاة الظهر', time: tomorrowPrayerTimes.solarNoon },
-                    { name: 'صلاة المغرب', display: 'صلاة المغرب', time: tomorrowPrayerTimes.civilTwilightEnd }
+                    { name: 'صلاة المغرب', display: 'صلاة المغرب', time: tomorrowPrayerTimes.maghrib }
                 ];
                 for (const prayer of tomorrowList) {
                     if (!prayer.time || isNaN(prayer.time.getTime())) continue;
@@ -597,15 +631,17 @@
 
         function updatePrayerSection() {
             const currentUTC = simulatedTime || new Date();
-            document.getElementById('current-time').textContent = `الوقت الآن: ${formatTime(currentUTC)}`;
             const selectedCity = document.getElementById('city-select').value;
             const city = cities[selectedCity];
+            // Update timezone based on selected city
+            selectedTimezone = city.timezone;
+            document.getElementById('current-time').textContent = `الوقت الآن: ${formatTime(currentUTC)}`;
             prayerTimes = getPrayerTimes(currentPrayerDate, city.lat, city.lng);
-            document.getElementById('astronomical-twilight-start').textContent = formatTime(prayerTimes.astronomicalDawn); // Fajr
+            document.getElementById('astronomical-twilight-start').textContent = formatTime(prayerTimes.fajr); // Fajr at -16°
             document.getElementById('sunrise').textContent = formatTime(prayerTimes.sunrise);
             document.getElementById('solar-noon').textContent = formatTime(prayerTimes.solarNoon);
             document.getElementById('sunset').textContent = formatTime(prayerTimes.sunset);
-            document.getElementById('civil-twilight-end').textContent = formatTime(prayerTimes.civilTwilightEnd); // Maghrib
+            document.getElementById('civil-twilight-end').textContent = formatTime(prayerTimes.maghrib); // Maghrib at -4°
             document.getElementById('iftar').textContent = formatTime(prayerTimes.iftar);
             document.getElementById('night-prayer').textContent = formatTime(prayerTimes.nightPrayer);
             document.getElementById('nautical-twilight-start').textContent = formatTime(prayerTimes.nauticalDawn);
@@ -708,6 +744,9 @@
             baseIndex = index;
             baseGregYear = year;
             currentPrayerDate = new Date();
+            // Set initial timezone from default selected city
+            const defaultCity = cities[document.getElementById('city-select').value];
+            selectedTimezone = defaultCity.timezone;
             updateTodaySection();
             updatePrayerSection();
             populateConversionPickers();
