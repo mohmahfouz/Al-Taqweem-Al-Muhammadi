@@ -105,12 +105,157 @@
         <div id="solar-times" style="display: none;">
             <div class="time-card">
                 <select id="city-select" aria-label="اختر المدينة">
-                    <option value="najaf" selected>النجف، العراق</option>
-                    <option value="karbala">كربلاء، العراق</option>
-                    <option value="al_hilla">الحلة، العراق</option>
-                    <option value="cairo">القاهرة، مصر</option>
-                    <option value="alexandria">الإسكندرية، مصر</option>
-                    <option value="port_said">بورسعيد، مصر</option>
+                    <optgroup label="العراق">
+                        <option value="najaf" selected>النجف، العراق</option>
+                        <option value="karbala">كربلاء، العراق</option>
+                        <option value="al_hilla">الحلة، العراق</option>
+                        <option value="baghdad">بغداد، العراق</option>
+                        <option value="basra">البصرة، العراق</option>
+                        <option value="erbil">أربيل، العراق</option>
+                        <option value="kirkuk">كركوك، العراق</option>
+                        <option value="mosul">الموصل، العراق</option>
+                        <option value="sulaymaniyah">السليمانية، العراق</option>
+                        <option value="dohuk">دهوك، العراق</option>
+                        <option value="najaf_shrine">النجف الأشرف، العراق</option>
+                        <option value="karbala_shrine">كربلاء المقدسة، العراق</option>
+                        <option value="samarra">سامراء، العراق</option>
+                        <option value="kadhimiya">الكاظمية، العراق</option>
+                    </optgroup>
+                    <optgroup label="مصر">
+                        <option value="cairo">القاهرة، مصر</option>
+                        <option value="alexandria">الإسكندرية، مصر</option>
+                        <option value="port_said">بورسعيد، مصر</option>
+                        <option value="cairo_new">العاصمة الإدارية الجديدة، مصر</option>
+                        <option value="giza">الجيزة، مصر</option>
+                        <option value="luxor">الأقصر، مصر</option>
+                        <option value="aswan">أسوان، مصر</option>
+                        <option value="tanta">طنطا، مصر</option>
+                        <option value="mansoura">المنصورة، مصر</option>
+                        <option value="suez">السويس، مصر</option>
+                        <option value="ismailia">الإسماعيلية، مصر</option>
+                        <option value="hurghada">الغردقة، مصر</option>
+                        <option value="sharm_el_sheikh">شرم الشيخ، مصر</option>
+                    </optgroup>
+                    <optgroup label="سوريا">
+                        <option value="damascus">دمشق، سوريا</option>
+                        <option value="aleppo">حلب، سوريا</option>
+                        <option value="homs">حمص، سوريا</option>
+                        <option value="hama">حماة، سوريا</option>
+                        <option value="latakia">اللاذقية، سوريا</option>
+                        <option value="tartus">طرطوس، سوريا</option>
+                        <option value="palmyra">تدمر، سوريا</option>
+                    </optgroup>
+                    <optgroup label="لبنان">
+                        <option value="beirut">بيروت، لبنان</option>
+                        <option value="tripoli_lb">طرابلس، لبنان</option>
+                        <option value="sidon">صيدا، لبنان</option>
+                        <option value="tyre">صور، لبنان</option>
+                    </optgroup>
+                    <optgroup label="الأردن">
+                        <option value="amman">عمّان، الأردن</option>
+                        <option value="irbid">إربد، الأردن</option>
+                        <option value="zarqa">الزرقاء، الأردن</option>
+                        <option value="aqaba">العقبة، الأردن</option>
+                    </optgroup>
+                    <optgroup label="فلسطين">
+                        <option value="jerusalem">القدس، فلسطين</option>
+                        <option value="ramallah">رام الله، فلسطين</option>
+                        <option value="gaza">غزة، فلسطين</option>
+                    </optgroup>
+                    <optgroup label="السعودية">
+                        <option value="riyadh">الرياض، السعودية</option>
+                        <option value="jeddah">جدة، السعودية</option>
+                        <option value="mecca">مكة المكرمة، السعودية</option>
+                        <option value="medina">المدينة المنورة، السعودية</option>
+                    </optgroup>
+                    <optgroup label="دول الخليج">
+                        <option value="kuwait_city">مدينة الكويت، الكويت</option>
+                        <option value="dubai">دبي، الإمارات</option>
+                        <option value="abu_dhabi">أبو ظبي، الإمارات</option>
+                        <option value="doha">الدوحة، قطر</option>
+                        <option value="manama">المنامة، البحرين</option>
+                        <option value="muscat">مسقط، عمان</option>
+                    </optgroup>
+                    <optgroup label="اليمن">
+                        <option value="sanaa">صنعاء، اليمن</option>
+                        <option value="aden">عدن، اليمن</option>
+                    </optgroup>
+                    <optgroup label="أفريقيا">
+                        <option value="khartoum">الخرطوم، السودان</option>
+                        <option value="casablanca">الدار البيضاء، المغرب</option>
+                        <option value="rabat">الرباط، المغرب</option>
+                        <option value="fez">فاس، المغرب</option>
+                        <option value="marrakech">مراكش، المغرب</option>
+                        <option value="tangier">طنجة، المغرب</option>
+                        <option value="algiers">الجزائر، الجزائر</option>
+                        <option value="tunis">تونس، تونس</option>
+                        <option value="tripoli_ly">طرابلس، ليبيا</option>
+                        <option value="nairobi">نيروبي، كينيا</option>
+                        <option value="johannesburg">جوهانسبرغ، جنوب أفريقيا</option>
+                    </optgroup>
+                    <optgroup label="تركيا وآسيا الصغرى">
+                        <option value="istanbul">إسطنبول، تركيا</option>
+                        <option value="ankara">أنقرة، تركيا</option>
+                        <option value="izmir">إزمير، تركيا</option>
+                        <option value="bursa">بورصة، تركيا</option>
+                        <option value="gaziantep">غازي عنتاب، تركيا</option>
+                        <option value="diyarbakir">ديار بكر، تركيا</option>
+                    </optgroup>
+                    <optgroup label="إيران">
+                        <option value="tehran">طهران، إيران</option>
+                        <option value="isfahan">أصفهان، إيران</option>
+                        <option value="shiraz">شيراز، إيران</option>
+                        <option value="qom">قم، إيران</option>
+                        <option value="mashhad">مشهد، إيران</option>
+                        <option value="tabriz">تبريز، إيران</option>
+                        <option value="rasht">رشت، إيران</option>
+                        <option value="ahvaz">الأحواز، إيران</option>
+                    </optgroup>
+                    <optgroup label="جنوب وشرق آسيا">
+                        <option value="kabul">كابل، أفغانستان</option>
+                        <option value="islamabad">إسلام آباد، باكستان</option>
+                        <option value="karachi">كراتشي، باكستان</option>
+                        <option value="lahore">لاهور، باكستان</option>
+                        <option value="delhi">دلهي، الهند</option>
+                        <option value="mumbai">بومباي، الهند</option>
+                        <option value="bangalore">بنغالور، الهند</option>
+                        <option value="dhaka">دكا، بنغلاديش</option>
+                        <option value="bangkok">بانكوك، تايلاند</option>
+                        <option value="hanoi">هانوي، فيتنام</option>
+                        <option value="ho_chi_minh">مدينة هو تشي منه، فيتنام</option>
+                        <option value="kuala_lumpur">كوالالمبور، ماليزيا</option>
+                        <option value="singapore">سنغافورة، سنغافورة</option>
+                        <option value="jakarta">جاكرتا، إندونيسيا</option>
+                        <option value="manila">مانيلا، الفلبين</option>
+                    </optgroup>
+                    <optgroup label="شرق آسيا">
+                        <option value="tokyo">طوكيو، اليابان</option>
+                        <option value="beijing">بكين، الصين</option>
+                        <option value="shanghai">شنغهاي، الصين</option>
+                        <option value="seoul">سيول، كوريا الجنوبية</option>
+                    </optgroup>
+                    <optgroup label="أوروبا">
+                        <option value="london">لندن، المملكة المتحدة</option>
+                        <option value="paris">باريس، فرنسا</option>
+                        <option value="berlin">برلين، ألمانيا</option>
+                        <option value="rome">روما، إيطاليا</option>
+                        <option value="madrid">مدريد، إسبانيا</option>
+                        <option value="moscow">موسكو، روسيا</option>
+                    </optgroup>
+                    <optgroup label="الأمريكتان">
+                        <option value="new_york">نيويورك، الولايات المتحدة</option>
+                        <option value="los_angeles">لوس أنجليس، الولايات المتحدة</option>
+                        <option value="chicago">شيكاغو، الولايات المتحدة</option>
+                        <option value="toronto">تورنتو، كندا</option>
+                        <option value="mexico_city">مدينة مكسيكو، المكسيك</option>
+                        <option value="buenos_aires">بوينس آيرس، الأرجنتين</option>
+                        <option value="sao_paulo">ساو باولو، البرازيل</option>
+                    </optgroup>
+                    <optgroup label="أوقيانوسيا">
+                        <option value="sydney">سيدني، أستراليا</option>
+                        <option value="melbourne">ملبورن، أستراليا</option>
+                        <option value="auckland">أوكلاند، نيوزيلندا</option>
+                    </optgroup>
                 </select>
                 <p id="coordinates">الإحداثيات: --</p>
                 <p id="current-time">--</p>
@@ -124,7 +269,7 @@
                 <p><strong>صلاة المغرب</strong>: <span id="civil-twilight-end">--</span></p>
             </div>
             <div class="time-card">
-                <p><strong>وقت الإفطار(اذان المغرب + 15 دقيقىة)</strong>: <span id="iftar">--</span></p>
+                <p><strong>وقت الإفطار يكون بعد غياب الحمرة المشرقية</strong>: <span id="iftar">--</span></p>
                 <p><strong>منتصف الليل</strong>: <span id="night-prayer">--</span></p>
             </div>
             <div class="time-card">
@@ -187,7 +332,7 @@
             </div>
         </div>
 
-        <footer>2025 © اسم المصمم: محمد محفوظ</footer>
+        <footer>2025 © اسم المصمم: ابو باسم الجعفرى المصرى</footer>
     </div>
     <script>
         const cities = {
@@ -196,7 +341,120 @@
             al_hilla: { lat: 32.46367, lng: 44.41963, name: 'الحلة، العراق', timezone: 'Asia/Baghdad' },
             cairo: { lat: 30.06263, lng: 31.24967, name: 'القاهرة، مصر', timezone: 'Africa/Cairo' },
             alexandria: { lat: 31.21564, lng: 29.95527, name: 'الإسكندرية، مصر', timezone: 'Africa/Cairo' },
-            port_said: { lat: 31.25654, lng: 32.28411, name: 'بورسعيد، مصر', timezone: 'Africa/Cairo' }
+            port_said: { lat: 31.25654, lng: 32.28411, name: 'بورسعيد، مصر', timezone: 'Africa/Cairo' },
+            baghdad: { lat: 33.31427, lng: 44.36157, name: 'بغداد، العراق', timezone: 'Asia/Baghdad' },
+            basra: { lat: 30.50307, lng: 47.80789, name: 'البصرة، العراق', timezone: 'Asia/Baghdad' },
+            erbil: { lat: 36.19230, lng: 44.00889, name: 'أربيل، العراق', timezone: 'Asia/Baghdad' },
+            damascus: { lat: 33.51380, lng: 36.27741, name: 'دمشق، سوريا', timezone: 'Asia/Damascus' },
+            aleppo: { lat: 36.20128, lng: 37.16117, name: 'حلب، سوريا', timezone: 'Asia/Damascus' },
+            beirut: { lat: 33.87365, lng: 35.50364, name: 'بيروت، لبنان', timezone: 'Asia/Beirut' },
+            amman: { lat: 31.94595, lng: 35.92807, name: 'عمّان، الأردن', timezone: 'Asia/Amman' },
+            jerusalem: { lat: 31.76904, lng: 35.21633, name: 'القدس، فلسطين', timezone: 'Asia/Jerusalem' },
+            ramallah: { lat: 31.94298, lng: 35.20251, name: 'رام الله، فلسطين', timezone: 'Asia/Jerusalem' },
+            gaza: { lat: 31.52567, lng: 34.46650, name: 'غزة، فلسطين', timezone: 'Asia/Jerusalem' },
+            riyadh: { lat: 24.77136, lng: 46.67850, name: 'الرياض، السعودية', timezone: 'Asia/Riyadh' },
+            jeddah: { lat: 21.54237, lng: 39.17237, name: 'جدة، السعودية', timezone: 'Asia/Riyadh' },
+            mecca: { lat: 21.42664, lng: 39.82563, name: 'مكة المكرمة، السعودية', timezone: 'Asia/Riyadh' },
+            medina: { lat: 24.46744, lng: 39.59623, name: 'المدينة المنورة، السعودية', timezone: 'Asia/Riyadh' },
+            kuwait_city: { lat: 29.37570, lng: 47.97737, name: 'مدينة الكويت، الكويت', timezone: 'Asia/Kuwait' },
+            dubai: { lat: 25.27242, lng: 55.29389, name: 'دبي، الإمارات', timezone: 'Asia/Dubai' },
+            abu_dhabi: { lat: 24.45279, lng: 54.37325, name: 'أبو ظبي، الإمارات', timezone: 'Asia/Dubai' },
+            doha: { lat: 25.28571, lng: 51.53435, name: 'الدوحة، قطر', timezone: 'Asia/Qatar' },
+            manama: { lat: 26.13362, lng: 50.55588, name: 'المنامة، البحرين', timezone: 'Asia/Bahrain' },
+            muscat: { lat: 23.61441, lng: 58.53806, name: 'مسقط، عمان', timezone: 'Asia/Muscat' },
+            sanaa: { lat: 15.35298, lng: 48.21957, name: 'صنعاء، اليمن', timezone: 'Asia/Aden' },
+            aden: { lat: 12.77971, lng: 45.36541, name: 'عدن، اليمن', timezone: 'Asia/Aden' },
+            khartoum: { lat: 15.50721, lng: 32.53953, name: 'الخرطوم، السودان', timezone: 'Africa/Khartoum' },
+            casablanca: { lat: 33.57311, lng: -7.58968, name: 'الدار البيضاء، المغرب', timezone: 'Africa/Casablanca' },
+            rabat: { lat: 34.02735, lng: -6.83383, name: 'الرباط، المغرب', timezone: 'Africa/Casablanca' },
+            fez: { lat: 34.06334, lng: -5.00034, name: 'فاس، المغرب', timezone: 'Africa/Casablanca' },
+            algiers: { lat: 36.73726, lng: 3.08649, name: 'الجزائر، الجزائر', timezone: 'Africa/Algiers' },
+            tunis: { lat: 36.80621, lng: 10.19566, name: 'تونس، تونس', timezone: 'Africa/Tunis' },
+            tripoli_ly: { lat: 32.88743, lng: 13.19103, name: 'طرابلس، ليبيا', timezone: 'Africa/Tripoli' },
+            istanbul: { lat: 41.00527, lng: 28.97585, name: 'إسطنبول، تركيا', timezone: 'Europe/Istanbul' },
+            ankara: { lat: 39.92077, lng: 32.85411, name: 'أنقرة، تركيا', timezone: 'Europe/Istanbul' },
+            tehran: { lat: 35.68919, lng: 51.38897, name: 'طهران، إيران', timezone: 'Asia/Tehran' },
+            isfahan: { lat: 32.65705, lng: 51.67489, name: 'أصفهان، إيران', timezone: 'Asia/Tehran' },
+            shiraz: { lat: 29.61438, lng: 52.53186, name: 'شيراز، إيران', timezone: 'Asia/Tehran' },
+            kabul: { lat: 34.52813, lng: 69.17957, name: 'كابل، أفغانستان', timezone: 'Asia/Kabul' },
+            islamabad: { lat: 33.68817, lng: 73.05978, name: 'إسلام آباد، باكستان', timezone: 'Asia/Karachi' },
+            karachi: { lat: 24.85728, lng: 67.01671, name: 'كراتشي، باكستان', timezone: 'Asia/Karachi' },
+            lahore: { lat: 31.54972, lng: 74.34361, name: 'لاهور، باكستان', timezone: 'Asia/Karachi' },
+            delhi: { lat: 28.70406, lng: 77.10249, name: 'دلهي، الهند', timezone: 'Asia/Kolkata' },
+            mumbai: { lat: 19.07597, lng: 72.87765, name: 'بومباي، الهند', timezone: 'Asia/Kolkata' },
+            bangalore: { lat: 12.97194, lng: 77.59369, name: 'بنغالور، الهند', timezone: 'Asia/Kolkata' },
+            dhaka: { lat: 23.81041, lng: 90.41250, name: 'دكا، بنغلاديش', timezone: 'Asia/Dhaka' },
+            bangkok: { lat: 13.72662, lng: 100.49801, name: 'بانكوك، تايلاند', timezone: 'Asia/Bangkok' },
+            hanoi: { lat: 21.02889, lng: 105.85445, name: 'هانوي، فيتنام', timezone: 'Asia/Ho_Chi_Minh' },
+            ho_chi_minh: { lat: 10.77587, lng: 106.70169, name: 'مدينة هو تشي منه، فيتنام', timezone: 'Asia/Ho_Chi_Minh' },
+            kuala_lumpur: { lat: 3.13972, lng: 101.68653, name: 'كوالالمبور، ماليزيا', timezone: 'Asia/Kuala_Lumpur' },
+            singapore: { lat: 1.35210, lng: 103.81983, name: 'سنغافورة، سنغافورة', timezone: 'Asia/Singapore' },
+            jakarta: { lat: -6.21462, lng: 106.84513, name: 'جاكرتا، إندونيسيا', timezone: 'Asia/Jakarta' },
+            manila: { lat: 14.59955, lng: 120.98417, name: 'مانيلا، الفلبين', timezone: 'Asia/Manila' },
+            tokyo: { lat: 35.67427, lng: 139.74005, name: 'طوكيو، اليابان', timezone: 'Asia/Tokyo' },
+            beijing: { lat: 39.90419, lng: 116.40747, name: 'بكين، الصين', timezone: 'Asia/Shanghai' },
+            shanghai: { lat: 31.23080, lng: 121.47348, name: 'شنغهاي، الصين', timezone: 'Asia/Shanghai' },
+            seoul: { lat: 37.56670, lng: 126.97805, name: 'سيول، كوريا الجنوبية', timezone: 'Asia/Seoul' },
+            london: { lat: 51.50735, lng: -0.12776, name: 'لندن، المملكة المتحدة', timezone: 'Europe/London' },
+            paris: { lat: 48.85661, lng: 2.35222, name: 'باريس، فرنسا', timezone: 'Europe/Paris' },
+            berlin: { lat: 52.52437, lng: 13.41053, name: 'برلين، ألمانيا', timezone: 'Europe/Berlin' },
+            rome: { lat: 41.90278, lng: 12.49633, name: 'روما، إيطاليا', timezone: 'Europe/Rome' },
+            madrid: { lat: 40.41678, lng: -3.70379, name: 'مدريد، إسبانيا', timezone: 'Europe/Madrid' },
+            moscow: { lat: 55.75222, lng: 37.61556, name: 'موسكو، روسيا', timezone: 'Europe/Moscow' },
+            new_york: { lat: 40.71278, lng: -74.00602, name: 'نيويورك، الولايات المتحدة', timezone: 'America/New_York' },
+            los_angeles: { lat: 34.05223, lng: -118.24368, name: 'لوس أنجليس، الولايات المتحدة', timezone: 'America/Los_Angeles' },
+            chicago: { lat: 41.88319, lng: -87.62398, name: 'شيكاغو، الولايات المتحدة', timezone: 'America/Chicago' },
+            toronto: { lat: 43.65107, lng: -79.34927, name: 'تورنتو، كندا', timezone: 'America/Toronto' },
+            mexico_city: { lat: 19.42847, lng: -99.12766, name: 'مدينة مكسيكو، المكسيك', timezone: 'America/Mexico_City' },
+            buenos_aires: { lat: -34.60368, lng: -58.38160, name: 'بوينس آيرس، الأرجنتين', timezone: 'America/Argentina/Buenos_Aires' },
+            sao_paulo: { lat: -23.55052, lng: -46.63331, name: 'ساو باولو، البرازيل', timezone: 'America/Sao_Paulo' },
+            sydney: { lat: -33.86785, lng: 151.21086, name: 'سيدني، أستراليا', timezone: 'Australia/Sydney' },
+            melbourne: { lat: -37.81410, lng: 144.96305, name: 'ملبورن، أستراليا', timezone: 'Australia/Melbourne' },
+            auckland: { lat: -37.01765, lng: 174.91722, name: 'أوكلاند، نيوزيلندا', timezone: 'Pacific/Auckland' },
+            nairobi: { lat: -1.28333, lng: 36.81667, name: 'نيروبي، كينيا', timezone: 'Africa/Nairobi' },
+            johannesburg: { lat: -26.20227, lng: 28.04363, name: 'جوهانسبرغ، جنوب أفريقيا', timezone: 'Africa/Johannesburg' },
+            cairo_new: { lat: 30.00994, lng: 31.49204, name: 'العاصمة الإدارية الجديدة، مصر', timezone: 'Africa/Cairo' },
+            giza: { lat: 30.00853, lng: 31.20515, name: 'الجيزة، مصر', timezone: 'Africa/Cairo' },
+            luxor: { lat: 25.68571, lng: 32.63934, name: 'الأقصر، مصر', timezone: 'Africa/Cairo' },
+            aswan: { lat: 24.08751, lng: 32.89053, name: 'أسوان، مصر', timezone: 'Africa/Cairo' },
+            tanta: { lat: 30.78505, lng: 31.00265, name: 'طنطا، مصر', timezone: 'Africa/Cairo' },
+            mansoura: { lat: 31.04729, lng: 31.37853, name: 'المنصورة، مصر', timezone: 'Africa/Cairo' },
+            suez: { lat: 29.96680, lng: 32.54857, name: 'السويس، مصر', timezone: 'Africa/Cairo' },
+            ismailia: { lat: 30.59755, lng: 32.27432, name: 'الإسماعيلية، مصر', timezone: 'Africa/Cairo' },
+            hurghada: { lat: 27.25868, lng: 33.81331, name: 'الغردقة، مصر', timezone: 'Africa/Cairo' },
+            sharm_el_sheikh: { lat: 27.97377, lng: 34.33939, name: 'شرم الشيخ، مصر', timezone: 'Africa/Cairo' },
+            marrakech: { lat: 31.62904, lng: -8.00853, name: 'مراكش، المغرب', timezone: 'Africa/Casablanca' },
+            tangier: { lat: 35.75742, lng: -5.83383, name: 'طنجة، المغرب', timezone: 'Africa/Casablanca' },
+            tripoli_lb: { lat: 34.43256, lng: 35.84413, name: 'طرابلس، لبنان', timezone: 'Asia/Beirut' },
+            sidon: { lat: 33.56311, lng: 35.37008, name: 'صيدا، لبنان', timezone: 'Asia/Beirut' },
+            tyre: { lat: 33.27333, lng: 35.19667, name: 'صور، لبنان', timezone: 'Asia/Beirut' },
+            irbid: { lat: 32.55556, lng: 35.84444, name: 'إربد، الأردن', timezone: 'Asia/Amman' },
+            zarqa: { lat: 32.05139, lng: 36.08667, name: 'الزرقاء، الأردن', timezone: 'Asia/Amman' },
+            aqaba: { lat: 29.52711, lng: 35.00711, name: 'العقبة، الأردن', timezone: 'Asia/Amman' },
+            homs: { lat: 34.72682, lng: 36.72316, name: 'حمص، سوريا', timezone: 'Asia/Damascus' },
+            hama: { lat: 35.13611, lng: 36.75444, name: 'حماة، سوريا', timezone: 'Asia/Damascus' },
+            latakia: { lat: 35.52857, lng: 35.78444, name: 'اللاذقية، سوريا', timezone: 'Asia/Damascus' },
+            tartus: { lat: 34.88889, lng: 35.88889, name: 'طرطوس، سوريا', timezone: 'Asia/Damascus' },
+            dura_europos: { lat: 34.74500, lng: 40.73500, name: 'تدمر، سوريا', timezone: 'Asia/Damascus' },
+            palmyra: { lat: 34.55500, lng: 38.27000, name: 'تدمر، سوريا', timezone: 'Asia/Damascus' },
+            kirkuk: { lat: 35.46750, lng: 44.39194, name: 'كركوك، العراق', timezone: 'Asia/Baghdad' },
+            mosul: { lat: 36.34149, lng: 43.15809, name: 'الموصل، العراق', timezone: 'Asia/Baghdad' },
+            sulaymaniyah: { lat: 35.56236, lng: 45.43056, name: 'السليمانية، العراق', timezone: 'Asia/Baghdad' },
+            dohuk: { lat: 36.87306, lng: 42.98694, name: 'دهوك، العراق', timezone: 'Asia/Baghdad' },
+            najaf_shrine: { lat: 32.02594, lng: 44.34625, name: 'النجف الأشرف، العراق', timezone: 'Asia/Baghdad' },
+            karbala_shrine: { lat: 32.61603, lng: 44.02488, name: 'كربلاء المقدسة، العراق', timezone: 'Asia/Baghdad' },
+            samarra: { lat: 34.19639, lng: 43.87139, name: 'سامراء، العراق', timezone: 'Asia/Baghdad' },
+            kadhimiya: { lat: 33.33667, lng: 44.36500, name: 'الكاظمية، العراق', timezone: 'Asia/Baghdad' },
+            istanbul_asia: { lat: 41.00527, lng: 28.97585, name: 'إسطنبول (آسيا)، تركيا', timezone: 'Europe/Istanbul' },
+            izmir: { lat: 38.41885, lng: 27.13806, name: 'إزمير، تركيا', timezone: 'Europe/Istanbul' },
+            bursa: { lat: 40.19559, lng: 29.06111, name: 'بورصة، تركيا', timezone: 'Europe/Istanbul' },
+            gaziantep: { lat: 37.06056, lng: 37.38333, name: 'غازي عنتاب، تركيا', timezone: 'Europe/Istanbul' },
+            diyarbakir: { lat: 37.91500, lng: 40.23500, name: 'ديار بكر، تركيا', timezone: 'Europe/Istanbul' },
+            qom: { lat: 34.64000, lng: 50.87667, name: 'قم، إيران', timezone: 'Asia/Tehran' },
+            mashhad: { lat: 36.26389, lng: 59.57500, name: 'مشهد، إيران', timezone: 'Asia/Tehran' },
+            tabriz: { lat: 38.08000, lng: 46.29333, name: 'تبريز، إيران', timezone: 'Asia/Tehran' },
+            rasht: { lat: 37.28056, lng: 49.58333, name: 'رشت، إيران', timezone: 'Asia/Tehran' },
+            ahvaz: { lat: 31.31889, lng: 48.67444, name: 'الأحواز، إيران', timezone: 'Asia/Tehran' }
         };
         const months = ["رمضان", "شوال", "جمادى الأولى", "جمادى الآخرة", "رجب", "ربيع الأول", "ربيع الآخر", "ذي القعدة", "ذي الحجة", "محرم", "صفر", "شعبان"];
         const baseSpecialDays = ["يوم التقويم الأول", "يوم التقويم الثاني", "يوم التقويم الثالث", "يوم التقويم الرابع", "يوم التقويم الخامس"];
@@ -455,7 +713,7 @@
             const gregorianDate = `الموافق ${dayNum} ${syriacMonth} ${gregYear} (التقويم الشمسي الحالي)`;
             return { text: `${dayOfWeek} ${dayName} لسنة ${customYear} من الهجرة (تقويم محمدى)`, date: baseDate, gregorian: gregorianDate, year: customYear };
         }
-        
+
         function getOccasion(index, year) {
             const isEndYearLeap = isLeapYear(year + 1);
             const specialDays = isEndYearLeap ? [...baseSpecialDays, "يوم التقويم السادس"] : [...baseSpecialDays];
@@ -467,7 +725,7 @@
             }
             return null;
         }
-        
+
         function getMansionInfo(index, year) {
             const isEndYearLeap = isLeapYear(year + 1);
             if (isEndYearLeap && index === 365) return mansions[27];
