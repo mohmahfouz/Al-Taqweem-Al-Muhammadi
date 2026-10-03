@@ -105,24 +105,214 @@
             .picker-group { min-width: 0; width: 100%; }
             .book-nav, .mansion-nav { flex-direction: column; gap: .5rem; }
         }
+
+        /* Modern compact controls for conversion and mansion navigation. */
+        .conversion-container { text-align: right; }
+        .conversion-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; align-items: stretch; }
+        .conversion-controls + .conversion-controls { grid-template-columns: 1fr; }
+        .picker-group { display: grid; grid-template-columns: 1fr 1fr; grid-template-areas: "select select" "prev next"; gap: .5rem; min-width: 0; padding: .75rem; background: rgba(255,255,255,.28); border: 1px solid rgba(27,77,62,.15); border-radius: .75rem; }
+        .picker-group select { grid-area: select; min-width: 0; margin-bottom: 0; }
+        .picker-group button:first-child { grid-area: prev; }
+        .picker-group button:last-child { grid-area: next; }
+        .conversion-container .button, .mansion-actions .button { width: auto; max-width: none; min-height: 2.5rem; padding: .55rem .8rem; font-size: .95rem; line-height: 1.25; transform: none; }
+        .conversion-container .button:hover, .mansion-actions .button:hover { transform: translateY(-1px); }
+        .date-format { margin: .35rem 0 0; color: #1B4D3E; font-size: .95rem; text-align: center; }
+        .mansion-actions { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-top: .75rem; padding-top: .75rem; border-top: 1px solid rgba(253,246,227,.2); }
+        .mansion-actions p { margin: 0; }
+        @media (max-width: 700px) {
+            .conversion-controls { grid-template-columns: 1fr; }
+            .conversion-controls + .conversion-controls { grid-template-columns: 1fr; }
+            .mansion-actions { align-items: stretch; flex-direction: column; }
+            .mansion-actions .button { width: 100%; }
+        }
+
+        /* Mobile-first readability and touch-target refinements. */
+        .next-mansion { margin-top: .75rem; padding-top: .75rem; border-top: 1px solid rgba(253,246,227,.2); font-weight: 600; }
+        select, input[type="date"], input[type="range"] { max-width: 100%; }
+        @media (max-width: 560px) {
+            body { padding: .5rem; }
+            .main-container { width: 100%; padding: 1rem; }
+            .header-section { margin-bottom: 1rem; }
+            h1 { font-size: clamp(1.75rem, 9vw, 2.35rem); }
+            .subtitle { font-size: 1rem; }
+            .info-container { font-size: .95rem; line-height: 1.75; }
+            .tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; margin-bottom: 1rem; }
+            .tab { min-width: 0; min-height: 2.75rem; padding: .65rem .5rem; border-radius: .6rem; font-size: .9rem; line-height: 1.25; }
+            .today-container h3, .conversion-container h2, .book-container h2 { line-height: 1.45; }
+            .today-container p, .conversion-result p { font-size: .98rem; line-height: 1.7; }
+            .time-card, .today-container, .conversion-container, .book-container { padding: .9rem; }
+            .picker-group { gap: .45rem; padding: .6rem; }
+            .conversion-container .button, .button { min-height: 2.75rem; padding: .65rem .55rem; font-size: .9rem; }
+            .picker-group select, .conversion-container select, .conversion-container input[type="date"] { min-height: 2.75rem; font-size: .95rem; }
+            .date-format { font-size: .9rem; }
+            .conversion-navigation { margin-top: .75rem; }
+            .conversion-result { margin-top: .9rem; }
+            .mansion-nav { gap: .5rem; }
+            .book-nav { gap: .5rem; }
+        }
+
+        /* Mobile app navigation: bottom tab bar + right-side drawer. */
+        .mobile-menu-toggle, .mobile-bottom-nav, .mobile-drawer, .mobile-drawer-overlay { display: none; }
+        .drawer-nav button, .drawer-nav a { font: inherit; }
+        @media (max-width: 560px) {
+            body { padding-bottom: 5.75rem; }
+            .main-container { padding-bottom: 1.25rem; }
+            .header-section { position: relative; display: flex; flex-direction: row; align-items: center; gap: .75rem; }
+            .header-titles { flex: 1; }
+            .mobile-menu-toggle { display: flex; width: 2.75rem; min-width: 2.75rem; height: 2.75rem; flex-direction: column; justify-content: center; align-items: center; gap: .28rem; background: #1B4D3E; border: 0; border-radius: .75rem; color: #FDF6E3; box-shadow: 0 3px 10px rgba(0,0,0,.16); }
+            .mobile-menu-toggle span { display: block; width: 1.15rem; height: 2px; background: currentColor; border-radius: 2px; }
+            .tabs { display: none; }
+            .mobile-bottom-nav { position: fixed; display: grid; grid-template-columns: repeat(4, 1fr); right: .65rem; bottom: .65rem; left: .65rem; z-index: 900; min-height: 4.25rem; padding: .35rem; background: rgba(253,246,227,.96); border: 1px solid rgba(27,77,62,.18); border-radius: 1.15rem; box-shadow: 0 8px 28px rgba(10,45,74,.22); backdrop-filter: blur(14px); }
+            .mobile-nav-item { display: flex; min-width: 0; min-height: 3.5rem; flex-direction: column; justify-content: center; align-items: center; gap: .15rem; padding: .35rem .2rem; background: transparent; border: 0; border-radius: .85rem; color: #0A2D4A; font: inherit; font-size: .72rem; font-weight: 600; line-height: 1.15; cursor: pointer; }
+            .mobile-nav-item .nav-icon { font-size: 1.25rem; line-height: 1; font-weight: 700; }
+            .mobile-nav-item.active { background: #1B4D3E; color: #FDF6E3; }
+            .mobile-drawer { position: fixed; display: flex; top: 0; right: 0; bottom: 0; z-index: 1100; width: min(86vw, 21rem); flex-direction: column; padding: 1.25rem; background: #FDF6E3; box-shadow: -12px 0 32px rgba(10,45,74,.25); transform: translateX(105%); transition: transform .25s ease; }
+            .mobile-drawer.open { transform: translateX(0); }
+            .mobile-drawer-overlay { position: fixed; display: block; inset: 0; z-index: 1050; background: rgba(10,45,74,.42); opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+            .mobile-drawer-overlay.open { opacity: 1; pointer-events: auto; }
+            .drawer-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(27,77,62,.16); }
+            .drawer-header h2 { margin: 0; color: #1B4D3E; font-size: 1.35rem; }
+            .drawer-close { width: 2.5rem; height: 2.5rem; border: 0; border-radius: 50%; background: #E8D8BD; color: #1B4D3E; font-size: 1.65rem; line-height: 1; cursor: pointer; }
+            .drawer-nav { display: flex; flex-direction: column; gap: .4rem; padding-top: 1rem; }
+            .drawer-nav button, .drawer-nav a { display: block; width: 100%; padding: .85rem .75rem; border: 0; border-radius: .65rem; background: transparent; color: #0A2D4A; text-align: right; text-decoration: none; cursor: pointer; }
+            .drawer-nav button:hover, .drawer-nav button:focus-visible, .drawer-nav a:hover, .drawer-nav a:focus-visible { background: #E8D8BD; color: #1B4D3E; }
+        }
+        @media (min-width: 561px) {
+            .mobile-drawer[aria-hidden="true"], .mobile-drawer-overlay[hidden] { display: none; }
+        }
+
+        /* Fixed app chrome and compact mobile navigation. */
+        .app-header { position: fixed; top: 0; left: 50%; z-index: 1000; width: min(56rem, calc(100% - 2rem)); height: 4.5rem; transform: translateX(-50%); margin: 0; padding: .75rem 1rem; background: rgba(253,246,227,.97); border-bottom: 1px solid rgba(27,77,62,.16); box-shadow: 0 4px 16px rgba(10,45,74,.12); backdrop-filter: blur(12px); }
+        .main-container { padding-top: 5.25rem; }
+        .header-spacer { width: 2.75rem; min-width: 2.75rem; }
+        .home-container { margin-top: 0; }
+        .home-container p { margin-bottom: .75rem; }
+        @media (max-width: 560px) {
+            body { padding-top: 0; }
+            .app-header { width: calc(100% - 1rem); height: 4rem; padding: .55rem .7rem; border-radius: 0 0 .9rem .9rem; }
+            .main-container { padding-top: 4.75rem; }
+            .header-titles { text-align: center; }
+            .header-titles h1 { font-size: clamp(1.45rem, 7vw, 1.9rem); white-space: nowrap; }
+            .header-titles .subtitle { margin-top: .15rem; font-size: .78rem; line-height: 1.2; white-space: nowrap; }
+            .header-spacer, .mobile-menu-toggle { width: 2.4rem; min-width: 2.4rem; height: 2.4rem; }
+            .mobile-menu-toggle { padding: 0; border-radius: .6rem; gap: .23rem; }
+            .mobile-menu-toggle span { width: 1rem; }
+            .mobile-bottom-nav { grid-template-columns: repeat(5, minmax(0, 1fr)); right: .45rem; bottom: .45rem; left: .45rem; min-height: 3.8rem; padding: .25rem; border-radius: .9rem; }
+            .mobile-nav-item { min-height: 3.2rem; gap: .1rem; padding: .25rem .1rem; font-size: .62rem; }
+            .mobile-nav-item .nav-icon { font-size: 1.05rem; }
+            .mobile-drawer { width: min(78vw, 18rem); max-height: 100dvh; overflow-y: auto; padding: .85rem; }
+            .drawer-header { padding-bottom: .7rem; }
+            .drawer-header h2 { font-size: 1.1rem; }
+            .drawer-close { width: 2.15rem; height: 2.15rem; font-size: 1.35rem; }
+            .drawer-nav { gap: .2rem; padding-top: .65rem; }
+            .drawer-nav button, .drawer-nav a { padding: .62rem .65rem; font-size: .88rem; line-height: 1.3; }
+            .home-container { font-size: .86rem; line-height: 1.55; }
+            .home-container a { margin: .35rem 0; }
+        }
+
+        /* Compact reading scale and persistent book pagination. */
+        body { font-size: 1rem; line-height: 1.55; }
+        .main-container { max-width: 48rem; padding-left: 1.25rem; padding-right: 1.25rem; }
+        .today-container, .time-card, .conversion-container, .book-container, .info-container { margin-bottom: 1rem; }
+        .today-container h3, .conversion-result h3 { font-size: 1.2rem; }
+        .today-container p, .time-card p, .conversion-result p { font-size: 1rem; }
+        .book-container { padding-bottom: 5.25rem; }
+        .book-nav { position: fixed; right: 50%; bottom: 1rem; z-index: 850; display: flex; width: min(36rem, calc(100% - 2rem)); margin: 0; padding: .5rem; transform: translateX(50%); gap: .5rem; background: rgba(253,246,227,.97); border: 1px solid rgba(27,77,62,.18); border-radius: .85rem; box-shadow: 0 6px 20px rgba(10,45,74,.2); backdrop-filter: blur(12px); }
+        .book-nav .button { flex: 1; width: auto; min-height: 2.7rem; padding: .6rem .8rem; font-size: .95rem; }
+        .subtitle { font-size: 1rem; white-space: nowrap; }
+        @media (max-width: 560px) {
+            .main-container { padding-left: .85rem; padding-right: .85rem; }
+            .today-container, .time-card, .conversion-container, .book-container, .info-container { margin-bottom: .75rem; }
+            .book-container { padding-bottom: 5.25rem; }
+            .book-nav { bottom: 4.85rem; width: calc(100% - 1.25rem); padding: .35rem; border-radius: .75rem; }
+            .book-nav .button { min-height: 2.55rem; padding: .5rem .35rem; font-size: .84rem; }
+            .header-titles .subtitle { font-size: .72rem; }
+        }
+        /* Dedicated mansion panel and compact footer metadata. */
+
+        .mansion-container { background: #1B4D3E; border-radius: 1rem; padding: 1.25rem; margin-bottom: 1rem; color: #FDF6E3; box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+        .mansion-container h2 { margin: 0 0 .75rem; color: #FDF6E3; font-size: 1.25rem; }
+        .mansion-container p { margin: .55rem 0; font-size: 1rem; line-height: 1.6; }
+        .mansion-summary { font-size: .95rem !important; opacity: .86; }
+        .footer-meta { margin: 0 0 .25rem; font-size: .78rem; line-height: 1.3; color: #0A2D4A; }
+        footer span { font-size: .78rem; }
+        @media (max-width: 560px) {
+            .mansion-container { padding: .9rem; border-radius: .8rem; }
+            .mansion-container h2 { font-size: 1.1rem; }
+            .mansion-container p { font-size: .92rem; }
+            .footer-meta, footer span { font-size: .72rem; }
+        }
+
+        /* Compact book pagination aligned to opposite sides. */
+        .book-nav { flex-direction: row; align-items: center; justify-content: space-between; }
+        .book-nav .button { flex: 0 0 auto; align-self: center; width: auto; min-width: 7.5rem; max-width: 12rem; font-size: .86rem; }
+        @media (max-width: 560px) {
+            .mobile-bottom-nav { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+            .mobile-nav-item { font-size: .56rem; }
+            .mobile-nav-item .nav-icon { font-size: .95rem; }
+            .book-nav { flex-direction: row; align-items: center; }
+            .book-nav .button { min-width: 6.25rem; max-width: 8rem; padding: .42rem .5rem; font-size: .76rem; }
+        }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
             .time-card:hover, .button:hover { transform: none; }
+        }
+
+        /* Targeted responsive improvements */
+        .timezone-row { display: flex; align-items: center; justify-content: center; gap: .65rem; flex-wrap: wrap; }
+        .timezone-row .footer-meta { margin: 0; }
+        .timezone-copy { min-width: 0; }
+        .timezone-help { margin: .15rem 0 0; color: #0A2D4A; font-size: .72rem; line-height: 1.4; }
+        .timezone-refresh { width: auto; min-width: 6.5rem; padding: .5rem .8rem; font-size: .9rem; }
+        @media (max-width: 560px) {
+            html, body { min-width: 0; width: 100%; }
+            body { min-height: 100svh; padding-bottom: calc(5.75rem + env(safe-area-inset-bottom)); }
+            .main-container { width: 100%; min-height: calc(100svh - 1rem); }
+            .mobile-bottom-nav { bottom: calc(.45rem + env(safe-area-inset-bottom)); }
+            .book-nav { bottom: calc(4.85rem + env(safe-area-inset-bottom)); }
+            .timezone-row { align-items: stretch; flex-direction: column; gap: .45rem; }
+            .timezone-copy { width: 100%; }
+            .timezone-refresh { width: 100%; }
+        }
+        @media (max-width: 360px) {
+            .main-container { padding-left: .65rem; padding-right: .65rem; }
+            .mobile-nav-item { font-size: .55rem; }
         }
     </style>
 </head>
 <body>
     <a class="skip-link" href="#main-content">تجاوز إلى المحتوى</a>
-    <div class="main-container" id="main-content">
-        <div class="header-section">
-            <div class="header-titles">
-                <h1>التقويم المحمدي</h1>
-                <p class="subtitle">مع مواقيت الصلاة و أداة للمقابلة</p>
-            </div>
-            <a href="index.html" download class="save-link" aria-label="تنزيل نسخة HTML من الصفحة">تنزيل نسخة HTML</a>
+    <div id="mobile-drawer-overlay" class="mobile-drawer-overlay" hidden></div>
+    <aside id="mobile-drawer" class="mobile-drawer" aria-label="القائمة الجانبية" aria-hidden="true">
+        <div class="drawer-header">
+            <h2>القائمة</h2>
+            <button type="button" id="mobile-drawer-close" class="drawer-close" aria-label="إغلاق القائمة">×</button>
         </div>
+        <nav class="drawer-nav" aria-label="روابط إضافية">
+            <button type="button" data-tab="home">الرئيسية</button>
+            <button type="button" data-tab="today">اليوم</button>
+            <button type="button" data-tab="mansion">حركة الشمس</button>
+            <button type="button" data-tab="prayer">مواقيت الصلاة</button>
+            <button type="button" data-tab="conversion">مقابلة التاريخ</button>
+            <button type="button" data-tab="book">من كتاب فيض العليم</button>
+            <a href="index.html" download>تنزيل نسخة HTML</a>
+            <a href="https://drive.google.com/file/d/1KonLhpZ8gsSPl1UlbjyxGm1kHHQaQmTQ/view">التقويم السنوي</a>
+            <a href="https://books.google.com.eg/books/about/%D9%81%D9%8A%D8%B6_%D8%A7%D9%84%D8%B9%D9%84%D9%8A%D9%85_%D9%81%D9%8A_%D9%85%D8%B9%D8%B1%D9%81%D8%A9_%D8%A7%D9%84.html?id=OyO1EAAAQBAJ">كتاب فيض العليم</a>
+        </nav>
+    </aside>
+    <div class="main-container" id="main-content">
+    <header class="header-section app-header">
+        <button type="button" id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="فتح قائمة التنقل" aria-controls="mobile-drawer" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="header-titles">
+            <h1>التقويم المحمدي</h1>
+            <p class="subtitle">مع مواقيت الصلاة و أداة للمقابلة</p>
+        </div>
+        <span class="header-spacer" aria-hidden="true"></span>
+    </header>
 
-        <div class="info-container">
+        <div class="info-container home-container" role="tabpanel" aria-labelledby="tab-home">
             <p>التقويم المحمدى هو نتيجة بحث السيد الأستاذ فرقد الحسينى القزوينى دام فيضه: لا علاقة له بحركة القمر. بل هو: تقويم شمسى نجمى يعتمد على حركة الشمس فى منازلها لمعرفة مواقع الشهور فى الفصول أولا. ومعرفة عدد السنين. المصدر كتاب فيض العليم في معرفة التقويم للسيد الأستاذ فرقد الحسيني القزويني</p>
             <a href="https://drive.google.com/file/d/1KonLhpZ8gsSPl1UlbjyxGm1kHHQaQmTQ/view?fbclid=IwY2xjawM3-HtleHRuA2FlbQIxMABicmlkETEyZWVrR0RZejFUYzN5T0FVAR4YHrEAXzr9WSySCkqQLw0HDZshjLcBYhl22b9EPQJtHh1tNdliO_PRcPQdEQ_aem_yCNWTOaAr28eYVfRsxK3dw">التقويم المحمدي السنوي في الرابط التالي</a>
             <a href="https://books.google.com.eg/books/about/%D9%81%D9%8A%D8%B6_%D8%A7%D9%84%D8%B9%D9%84%D9%8A%D9%85_%D9%81%D9%8A_%D9%85%D8%B9%D8%B1%D9%81%D8%A9_%D8%A7%D9%84.html?id=OyO1EAAAQBAJ&redir_esc=y">رابط كتاب فيض العليم فى معرفة التقويم</a>
@@ -134,21 +324,26 @@
             </a>
         </div>
         <div class="tabs" role="tablist" aria-label="أقسام التطبيق">
-            <button type="button" class="tab active" id="tab-today" role="tab" aria-selected="true" data-tab="today">اليوم</button>
+            <button type="button" class="tab active" id="tab-home" role="tab" aria-selected="true" data-tab="home">الرئيسية</button>
+            <button type="button" class="tab" id="tab-today" role="tab" aria-selected="false" data-tab="today">اليوم</button>
+            <button type="button" class="tab" id="tab-mansion" role="tab" aria-selected="false" data-tab="mansion">حركة الشمس</button>
             <button type="button" class="tab" id="tab-prayer" role="tab" aria-selected="false" data-tab="prayer">مواقيت الصلاة</button>
             <button type="button" class="tab" id="tab-conversion" role="tab" aria-selected="false" data-tab="conversion">مقابلة</button>
             <button type="button" class="tab" id="tab-book" role="tab" aria-selected="false" data-tab="book">من كتاب فيض العليم</button>
         </div>
 
-        <div class="today-container" role="tabpanel" aria-labelledby="tab-today">
+        <div class="today-container" role="tabpanel" aria-labelledby="tab-today" style="display: none;">
             <h3>اليوم</h3>
             <p id="muhammadan-date">--</p>
             <p id="gregorian-date">--</p>
-            <p id="detected-timezone">المنطقة الزمنية المكتشفة: --</p>
             <p id="occasion-info" class="occasion-info">المناسبات: --</p>
-            <h3>حركة الشمس فى منازلها</h3>
+        </div>
+
+        <div class="mansion-container" role="tabpanel" aria-labelledby="tab-mansion" style="display: none;">
+            <h2>حركة الشمس فى منازلها</h2>
             <p id="today-mansion-info-rising">الطالع بالغداة: --</p>
             <p id="today-mansion-info-setting">الغارب بالغداة: --</p>
+            <p id="today-next-mansion" class="next-mansion">المنزلة القادمة: --</p>
             <p id="today-mansion-info-quote">يقول ساجع العرب: --</p>
         </div>
 
@@ -354,6 +549,7 @@
                 <div class="conversion-controls">
                     <label class="sr-only" for="conversion-gregorian-picker">اختر التاريخ الميلادي</label>
                     <input type="date" id="conversion-gregorian-picker" aria-label="اختر التاريخ الميلادي" min="0620-01-01" max="2089-12-31">
+                    <p id="conversion-date-format" class="date-format">DD/MM/YYYY: --</p>
                 </div>
                 <input type="range" id="slider" min="0" max="364" value="0">
                 <div class="reset-button-container">
@@ -384,8 +580,25 @@
             </div>
         </div>
 
-        <footer>2026 © اسم المصمم: ابو باسم المصرى</footer>
+        <footer>
+            <div class="timezone-row">
+                <div class="timezone-copy">
+                    <p id="detected-timezone" class="footer-meta">المنطقة الزمنية: --</p>
+                    <p class="timezone-help">يجب على المستخدم تفعيل إعداد التاريخ والمنطقة الزمنية تلقائيًا على الهاتف المحمول</p>
+                </div>
+                <button type="button" id="redetect-timezone" class="button timezone-refresh" title="إعادة اكتشاف المنطقة الزمنية من إعدادات المتصفح">تحديث</button>
+            </div>
+            <span>2026 © اسم المصمم: ابو باسم المصرى</span>
+        </footer>
     </div>
+    <nav id="mobile-bottom-nav" class="mobile-bottom-nav" role="tablist" aria-label="التنقل الرئيسي">
+        <button type="button" class="mobile-nav-item active" role="tab" aria-selected="true" data-tab="home"><span class="nav-icon" aria-hidden="true">⌂</span><span>الرئيسية</span></button>
+        <button type="button" class="mobile-nav-item" role="tab" aria-selected="false" data-tab="today"><span class="nav-icon" aria-hidden="true">◉</span><span>اليوم</span></button>
+        <button type="button" class="mobile-nav-item" role="tab" aria-selected="false" data-tab="mansion"><span class="nav-icon" aria-hidden="true">✦</span><span>حركة الشمس</span></button>
+        <button type="button" class="mobile-nav-item" role="tab" aria-selected="false" data-tab="prayer"><span class="nav-icon" aria-hidden="true">◷</span><span>الصلاة</span></button>
+        <button type="button" class="mobile-nav-item" role="tab" aria-selected="false" data-tab="conversion"><span class="nav-icon" aria-hidden="true">⇄</span><span>المقابلة</span></button>
+        <button type="button" class="mobile-nav-item" role="tab" aria-selected="false" data-tab="book"><span class="nav-icon" aria-hidden="true">▤</span><span>الكتاب</span></button>
+    </nav>
     <script>
         const cities = {
             najaf: { lat: 32.02594, lng: 44.34625, name: 'النجف، العراق', timezone: 'Asia/Baghdad' },
@@ -514,9 +727,23 @@
         const calendarStartMonth = 9; // October, zero-based: solar-calendar anchor
         const calendarStartDay = 16;
         const newWeekStartKey = "2026-10-17";
-        const detectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+        function getBrowserTimeZone() {
+            try {
+                const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                if (timeZone) {
+                    new Intl.DateTimeFormat('en-US', { timeZone }).format();
+                    return timeZone;
+                }
+            } catch (error) {
+                console.warn('The browser did not provide a valid timezone.', error);
+            }
+            return 'UTC';
+        }
+
+        let detectedTimeZone = getBrowserTimeZone();
         let calendarTimeZone = detectedTimeZone;
-        let selectedTimezone = detectedTimeZone; // Prayer-time timezone; updated by city selection
+        let selectedTimezone = detectedTimeZone;
+        let timezoneSource = 'browser';
         const syriacMonths = ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول'];
         const occasions = [
             {month: "رمضان", day: "1", occasion: "ليلة القدر"},
@@ -851,6 +1078,38 @@
             return `(منذ ${firstDay.getUTCDate()} ${syriacMonths[firstDay.getUTCMonth()]})`;
         }
 
+        function formatDateDDMMYYYY(date) {
+            return `${String(date.getUTCDate()).padStart(2, '0')}/${String(date.getUTCMonth() + 1).padStart(2, '0')}/${date.getUTCFullYear()}`;
+        }
+
+        function getCalendarYearForDate(date) {
+            const year = date.getUTCFullYear();
+            return date >= dateKeyToUtcDate(calendarYearStartKey(year)) ? year : year - 1;
+        }
+
+        function setConversionToDate(date) {
+            baseGregYear = getCalendarYearForDate(date);
+            baseIndex = Math.round((date - dateKeyToUtcDate(calendarYearStartKey(baseGregYear))) / 86400000);
+            const maxIndex = isLeapYear(baseGregYear + 1) ? 365 : 364;
+            baseIndex = Math.max(0, Math.min(maxIndex, baseIndex));
+            const slider = document.getElementById('slider');
+            slider.max = maxIndex;
+            slider.value = baseIndex;
+            updateConversionDisplay();
+        }
+
+        function getMansionOccurrenceDate(mansion, referenceDate, direction = 1) {
+            const sourceDate = new Date(mansions[mansion.rangeIndex]["التاريخ"]);
+            let year = referenceDate.getUTCFullYear();
+            let candidate = new Date(Date.UTC(year, sourceDate.getUTCMonth(), sourceDate.getUTCDate(), 12));
+            if (direction > 0 && candidate <= referenceDate) {
+                candidate = new Date(Date.UTC(year + 1, sourceDate.getUTCMonth(), sourceDate.getUTCDate(), 12));
+            } else if (direction < 0 && candidate >= referenceDate) {
+                candidate = new Date(Date.UTC(year - 1, sourceDate.getUTCMonth(), sourceDate.getUTCDate(), 12));
+            }
+            return candidate;
+        }
+
         function formatTime(date) {
             if (isNaN(date.getTime())) return '--';
             return date.toLocaleTimeString('ar-EG', { timeZone: selectedTimezone, hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -984,12 +1243,20 @@
             const { text, gregorian } = getCustomDate(todayIndex, todayGregYear);
             document.getElementById('muhammadan-date').textContent = text;
             document.getElementById('gregorian-date').textContent = gregorian;
-            document.getElementById('detected-timezone').textContent = `المنطقة الزمنية المكتشفة: ${calendarTimeZone}`;
+            const sourceLabel = timezoneSource === 'manual'
+                ? 'المنطقة الزمنية (يدويًا)'
+                : 'المنطقة الزمنية';
+            document.getElementById('detected-timezone').textContent = `${sourceLabel}: ${calendarTimeZone}`;
             const occasion = getOccasion(todayIndex, todayGregYear);
             document.getElementById('occasion-info').textContent = occasion ? `المناسبات: ${occasion}` : 'المناسبات: لا يوجد';
             const mansion = getMansionInfo(todayIndex, todayGregYear);
             document.getElementById('today-mansion-info-rising').textContent = mansion ? `الطالع بالغداة: ${mansion["الطالع بالغداة"]} ${formatMansionStart(mansion, todayGregYear)}` : 'الطالع بالغداة: --';
             document.getElementById('today-mansion-info-setting').textContent = mansion ? `الغارب بالغداة: ${mansion["الغارب بالغداة"]}` : 'الغارب بالغداة: --';
+            const nextMansion = mansion ? mansions[(mansion.rangeIndex + 1) % mansions.length] : null;
+            const currentDate = getCustomDate(todayIndex, todayGregYear).date;
+            const nextMansionRef = nextMansion ? { ...nextMansion, rangeIndex: (mansion.rangeIndex + 1) % mansions.length } : null;
+            const nextMansionDate = nextMansionRef ? getMansionOccurrenceDate(nextMansionRef, currentDate, 1) : null;
+            document.getElementById('today-next-mansion').textContent = nextMansionRef ? `المنزلة القادمة: ${nextMansionRef["الطالع بالغداة"]} (${formatDateDDMMYYYY(nextMansionDate)})` : 'المنزلة القادمة: --';
             document.getElementById('today-mansion-info-quote').textContent = mansion ? `يقول ساجع العرب: ${mansion["يقول ساجع العرب"]}` : 'يقول ساجع العرب: --';
         }
 
@@ -997,7 +1264,7 @@
             const currentUTC = simulatedTime || new Date();
             const selectedCity = document.getElementById('city-select').value;
             const city = cities[selectedCity];
-            // Update timezone based on selected city
+            // The selected city is the manual timezone source for every section.
             selectedTimezone = city.timezone;
             document.getElementById('current-time').textContent = `الوقت الآن: ${formatTime(currentUTC)}`;
             prayerTimes = getPrayerTimes(currentPrayerDate, city.lat, city.lng);
@@ -1080,6 +1347,7 @@
             const monthStr = String(date.getUTCMonth() + 1).padStart(2, '0');
             const dayStr = String(date.getUTCDate()).padStart(2, '0');
             gregorianPicker.value = `${yearStr}-${monthStr}-${dayStr}`;
+            document.getElementById('conversion-date-format').textContent = `DD/MM/YYYY: ${formatDateDDMMYYYY(date)}`;
             const mansion = getMansionInfo(baseIndex, baseGregYear);
             document.getElementById('conversion-mansion-info-rising').textContent = mansion ? `الطالع بالغداة: ${mansion["الطالع بالغداة"]} ${formatMansionStart(mansion, baseGregYear)}` : 'الطالع بالغداة: --';
             document.getElementById('conversion-mansion-info-setting').textContent = mansion ? `الغارب بالغداة: ${mansion["الغارب بالغداة"]}` : 'الغارب بالغداة: --';
@@ -1102,17 +1370,47 @@
             document.getElementById('slider').value = baseIndex;
         }
 
-        function selectDetectedCity() {
+        function selectDetectedCity(timeZone = detectedTimeZone) {
             const citySelect = document.getElementById('city-select');
             const preferredCityByTimezone = {
                 'Asia/Baghdad': 'baghdad',
                 'Asia/Muscat': 'muscat'
             };
-            const preferredKey = preferredCityByTimezone[detectedTimeZone];
+            const preferredKey = preferredCityByTimezone[timeZone];
             const matchingEntry = preferredKey && cities[preferredKey]
                 ? [preferredKey, cities[preferredKey]]
-                : Object.entries(cities).find(([, city]) => city.timezone === detectedTimeZone);
-            if (matchingEntry) citySelect.value = matchingEntry[0];
+                : Object.entries(cities).find(([, city]) => city.timezone === timeZone);
+            if (matchingEntry) {
+                citySelect.value = matchingEntry[0];
+                return true;
+            }
+            return false;
+        }
+
+        function syncTimezoneState(timeZone, source = 'manual') {
+            calendarTimeZone = timeZone || 'UTC';
+            selectedTimezone = calendarTimeZone;
+            timezoneSource = source;
+            const { index, year } = getTodayIndexAndYear();
+            todayIndex = index;
+            todayGregYear = year;
+            baseIndex = index;
+            baseGregYear = year;
+            currentPrayerDate = new Date();
+            simulatedTime = null;
+            updateTodaySection();
+            updatePrayerSection();
+            updateConversionDisplay();
+        }
+
+        function redetectTimezone() {
+            detectedTimeZone = getBrowserTimeZone();
+            const matchedCity = selectDetectedCity(detectedTimeZone);
+            syncTimezoneState(detectedTimeZone, 'browser');
+            if (!matchedCity) {
+                // The calendar follows the browser timezone even when no listed city matches it.
+                updateTodaySection();
+            }
         }
 
         function initialize() {
@@ -1125,8 +1423,11 @@
             currentPrayerDate = new Date();
             // Use the city matching the detected timezone for prayer times by default.
             const defaultCity = cities[document.getElementById('city-select').value];
-            selectedTimezone = defaultCity.timezone;
-            updateTodaySection();
+            if (defaultCity && defaultCity.timezone === detectedTimeZone) {
+                syncTimezoneState(detectedTimeZone, 'browser');
+            } else {
+                updateTodaySection();
+            }
             updatePrayerSection();
             populateConversionPickers();
             updateConversionDisplay();
@@ -1138,13 +1439,15 @@
         }
 
         function switchTab(tabName) {
-            document.querySelectorAll('.tab').forEach(tab => {
+            document.querySelectorAll('.tab, .mobile-nav-item, .drawer-nav [data-tab]').forEach(tab => {
                 const isActive = tab.getAttribute('data-tab') === tabName;
                 tab.classList.toggle('active', isActive);
                 tab.setAttribute('aria-selected', String(isActive));
             });
-            document.querySelectorAll('.today-container, #solar-times, .conversion-container, .book-container').forEach(container => container.style.display = 'none');
+            document.querySelectorAll('.home-container, .today-container, .mansion-container, #solar-times, .conversion-container, .book-container').forEach(container => container.style.display = 'none');
+            if (tabName === 'home') document.querySelector('.home-container').style.display = 'block';
             if (tabName === 'today') document.querySelector('.today-container').style.display = 'block';
+            if (tabName === 'mansion') document.querySelector('.mansion-container').style.display = 'block';
             if (tabName === 'prayer') document.querySelector('#solar-times').style.display = 'block';
             if (tabName === 'conversion') document.querySelector('.conversion-container').style.display = 'block';
             if (tabName === 'book') {
@@ -1156,10 +1459,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             initialize();
             document.getElementById('city-select').addEventListener('change', () => {
-                simulatedTime = null;
-                currentPrayerDate = new Date();
-                updatePrayerSection();
+                const city = cities[document.getElementById('city-select').value];
+                if (!city) return;
+                syncTimezoneState(city.timezone, 'manual');
             });
+            document.getElementById('redetect-timezone').addEventListener('click', redetectTimezone);
             document.getElementById('time-slider').addEventListener('input', () => {
                 const minutes = parseInt(document.getElementById('time-slider').value);
                 simulatedTime = new Date(currentPrayerDate);
@@ -1172,13 +1476,25 @@
                 updateConversionDisplay();
             });
             document.getElementById('prevDay').addEventListener('click', () => {
-                baseIndex = Math.max(0, baseIndex - 1);
+                if (baseIndex > 0) {
+                    baseIndex--;
+                } else {
+                    baseGregYear--;
+                    baseIndex = isLeapYear(baseGregYear + 1) ? 365 : 364;
+                }
+                document.getElementById('slider').max = isLeapYear(baseGregYear + 1) ? 365 : 364;
                 document.getElementById('slider').value = baseIndex;
                 updateConversionDisplay();
             });
             document.getElementById('nextDay').addEventListener('click', () => {
-                const isEndYearLeap = isLeapYear(baseGregYear + 1);
-                baseIndex = Math.min(isEndYearLeap ? 365 : 364, baseIndex + 1);
+                const maxIndex = isLeapYear(baseGregYear + 1) ? 365 : 364;
+                if (baseIndex < maxIndex) {
+                    baseIndex++;
+                } else {
+                    baseGregYear++;
+                    baseIndex = 0;
+                }
+                document.getElementById('slider').max = isLeapYear(baseGregYear + 1) ? 365 : 364;
                 document.getElementById('slider').value = baseIndex;
                 updateConversionDisplay();
             });
@@ -1292,32 +1608,55 @@
             document.getElementById('conversion-nextMansion').addEventListener('click', () => {
                 const mansion = getMansionInfo(baseIndex, baseGregYear);
                 if (!mansion) return;
-                let newIndex = (mansion.rangeIndex + 1) % mansions.length;
-                const newMansion = mansions[newIndex];
-                const newMansionDate = new Date(newMansion["التاريخ"]);
-                let year = newMansionDate.getFullYear();
-                const calendarStart = dateKeyToUtcDate(calendarYearStartKey(year));
-                if (newMansionDate < calendarStart) year--;
-                baseGregYear = year;
-                const timeDiff = newMansionDate - dateKeyToUtcDate(calendarYearStartKey(year));
-                baseIndex = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-                document.getElementById('slider').value = baseIndex;
-                updateConversionDisplay();
+                const newMansion = { ...mansions[(mansion.rangeIndex + 1) % mansions.length], rangeIndex: (mansion.rangeIndex + 1) % mansions.length };
+                const currentDate = getCustomDate(baseIndex, baseGregYear).date;
+                setConversionToDate(getMansionOccurrenceDate(newMansion, currentDate, 1));
             });
             document.getElementById('book-prev-page').addEventListener('click', () => {
                 if (currentBookPage > 1) {
                     currentBookPage--;
                     updateBookSection();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             });
             document.getElementById('book-next-page').addEventListener('click', () => {
                 if (currentBookPage < totalBookPages) {
                     currentBookPage++;
                     updateBookSection();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             });
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.addEventListener('click', () => switchTab(tab.getAttribute('data-tab')));
+            document.querySelectorAll('.tab, .mobile-nav-item, .drawer-nav [data-tab]').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchTab(tab.getAttribute('data-tab'));
+                    closeMobileDrawer();
+                });
+            });
+            const drawer = document.getElementById('mobile-drawer');
+            const drawerOverlay = document.getElementById('mobile-drawer-overlay');
+            const menuToggle = document.getElementById('mobile-menu-toggle');
+            const drawerClose = document.getElementById('mobile-drawer-close');
+            function openMobileDrawer() {
+                drawer.classList.add('open');
+                drawerOverlay.hidden = false;
+                requestAnimationFrame(() => drawerOverlay.classList.add('open'));
+                drawer.setAttribute('aria-hidden', 'false');
+                menuToggle.setAttribute('aria-expanded', 'true');
+                drawerClose.focus();
+            }
+            function closeMobileDrawer() {
+                if (!drawer.classList.contains('open')) return;
+                drawer.classList.remove('open');
+                drawerOverlay.classList.remove('open');
+                drawer.setAttribute('aria-hidden', 'true');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                setTimeout(() => { if (!drawer.classList.contains('open')) drawerOverlay.hidden = true; }, 250);
+            }
+            menuToggle.addEventListener('click', openMobileDrawer);
+            drawerClose.addEventListener('click', closeMobileDrawer);
+            drawerOverlay.addEventListener('click', closeMobileDrawer);
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape') closeMobileDrawer();
             });
         });
     </script>
